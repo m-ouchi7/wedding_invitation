@@ -1,9 +1,30 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+if Guest.count == 0
+  guest = Guest.create!(
+    first_name: "太郎",
+    middle_name: "",
+    last_name: "山田",
+    guest_side: 1,
+  )
+
+  GuestPersonalInfo.create!(
+    guest_id: guest.id,
+    email: "taro.yamada@example.com",
+    phone: "090-1234-5678",
+    postal_code: "100-0001",
+    prefecture_code: "13",
+    city_code: "13101",
+    town: "千代田1-1",
+    building: "皇居ビル101",
+  )
+
+  GuestAnswer.create!(
+    guest_id: guest.id,
+    attendance: 1,
+    allergy: "なし",
+    message: "おめでとうございます！",
+  )
+
+  puts "✅ ユーザーデータを #{Guest.count} 件作成しました。"
+else
+  puts "⚠️ ユーザーデータは既に存在するためスキップしました。"
+end
