@@ -3,13 +3,13 @@ module Api
     class GuestInfoController < ApplicationController
       def index
         guest_email = params[:email]
+        # TODO: 個人情報漏洩防止のためにメールアドレス認証に変更する
         
         if !guest_email.present?
           render json: {}, status: :ok
           return
         end
         
-        guest = nil
         guest = Guest
                   .includes(:guest_personal_info, :guest_answer)
                   .find_by(guest_personal_infos: {email: guest_email})
