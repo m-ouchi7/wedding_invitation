@@ -1,20 +1,20 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  guest_id: 1
+  guest: one
   email: MyString
   phone: MyString
-  postal_code: 1
+  postal_code: MyString
   prefecture_code: 1
   city_code: 1
   town: MyString
   building: MyString
 
 two:
-  guest_id: 1
+  guest: two
   email: MyString
   phone: MyString
-  postal_code: 1
+  postal_code: MyString
   prefecture_code: 1
   city_code: 1
   town: MyString

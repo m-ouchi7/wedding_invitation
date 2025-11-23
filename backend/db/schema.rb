@@ -10,36 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_22_082636) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_23_050820) do
   create_table "guest_answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "guest_id"
-    t.integer "attendance"
-    t.text "allergy"
-    t.text "message"
+    t.bigint "guest_id", null: false
+    t.integer "attendance", limit: 1, null: false, unsigned: true
+    t.text "allergy", size: :long
+    t.text "message", size: :long
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_guest_answers_on_guest_id"
   end
 
   create_table "guest_personal_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "guest_id"
-    t.string "email"
-    t.string "phone"
-    t.integer "postal_code"
-    t.integer "prefecture_code"
-    t.integer "city_code"
-    t.string "town"
-    t.string "building"
+    t.bigint "guest_id", null: false
+    t.string "email", null: false
+    t.string "phone", limit: 15
+    t.string "postal_code", limit: 8, null: false
+    t.integer "prefecture_code", limit: 2, null: false
+    t.bigint "city_code", null: false
+    t.string "town", limit: 100, null: false
+    t.string "building", limit: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_guest_personal_infos_on_guest_id"
   end
 
   create_table "guests", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "first_name"
-    t.string "middle_name"
-    t.string "last_name"
-    t.integer "guest_side"
+    t.string "first_name", limit: 100, null: false
+    t.string "middle_name", limit: 100
+    t.string "last_name", limit: 100, null: false
+    t.integer "guest_side", limit: 1, null: false, unsigned: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "guest_answers", "guests"
+  add_foreign_key "guest_personal_infos", "guests"
 end
