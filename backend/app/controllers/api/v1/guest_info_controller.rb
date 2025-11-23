@@ -2,47 +2,46 @@ module Api
   module V1
     class GuestInfoController < ApplicationController
       def index
-        render json: {
-          email: 'test@gmail.com',
-          first_name: '名前',
-          middle_name: 'ミドルネーム',
-          last_name: '苗字',
-          guest_side: '1',
-          phone: '080-1234-5678',
-          postal_code: '000-0000',
-          prefecture_code: '00',
-          city_code: '00000',
-          town: '町名',
-          building: '建物名',
-          attendance: '1',
-          allergy: 'アレルギー内容',
-          message: '結婚おめでとう'
-        }, status: :ok
+        guest_email = params[:email]
+        guest = nil
 
-        # # パラメーターから email の値を取得
-        # guest_email = params[:email]
+        if guest_email.present?
+          guest = Guest
+                    .includes(:guest_personal_info, :guest_answer)
+                    .find_by(guest_personal_infos: {email: guest_email})
 
-        # if guest_email.present?
-        #   # 取得した email を使って、データベースからゲストを検索
-        #   @guest = Guest.find_by(email: guest_email)
+          if guest
+            guest_personal_info = guest.guest_personal_info
+            guest_answer = guest.guest_answer
 
-        #   if @guest
-        #     # ゲストが存在すれば、その情報をJSONで返す
-        #     guest_data =  @guest.as_json(except: [:id, :created_at, :updated_at])
-        #   else
-        #     guest_data = nil
-        #   end
+            render json: {
+              email: guest_personal_info.email,
+              first_name: guest.first_name,
+              middle_name: guest.middle_name,
+              last_name: guest.last_name,
+              guest_side: guest.guest_side,
+              phone: guest_personal_info.phone,
+              postal_code: guest_personal_info.postal_code,
+              prefecture_code: guest_personal_info.prefecture_code,
+              city_code: guest_personal_info.city_code,
+              town: guest_personal_info.town,
+              building: guest_personal_info.building,
+              attendance: guest_answer.attendance,
+              allergy: guest_answer.allergy,
+              message: guest_answer.message
+            }, status: :ok
 
-        # else
-        #   guest_data = nil
-        # end
-
-        # render json: {
-        #   status: 'ok',
-        #   guest: guest_data,
-        #   timestamp: Time.current
-        # }, status: :ok
-
+          else
+            render json: {
+              error: "guest is not found by #{guest_email}"
+            }, status: :not_found
+          end
+          
+        else
+          render json: {
+              error: "no email in params"
+            }, status: :not_found
+        end
       end
     end
   end
