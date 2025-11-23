@@ -20,7 +20,7 @@ docker-compose up -d
 
 ### 4. テーブル作成・初期データ投入
 ```
-docker-compose exec -it rails_api bash
+docker exec -it rails_api bash
 
 bundle exec rails db:migrate
 bundle exec rails db:seed
