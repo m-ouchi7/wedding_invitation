@@ -2,16 +2,20 @@
 
 one:
   venue_name: MyString
-  open_time: 2025-11-24 07:59:24
-  start_time: 2025-11-24 07:59:24
+  postal_code: MyString
+  address: MyString
+  open_time: 2025-11-24 08:18:20
+  start_time: 2025-11-24 08:18:20
   bride_name: MyString
   groom_name: MyString
   message: MyText
 
 two:
   venue_name: MyString
-  open_time: 2025-11-24 07:59:24
-  start_time: 2025-11-24 07:59:24
+  postal_code: MyString
+  address: MyString
+  open_time: 2025-11-24 08:18:20
+  start_time: 2025-11-24 08:18:20
   bride_name: MyString
   groom_name: MyString
   message: MyText
