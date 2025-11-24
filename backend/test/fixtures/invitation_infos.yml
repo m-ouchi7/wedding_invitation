@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  venue_name: MyString
+  open_time: 2025-11-24 07:59:24
+  start_time: 2025-11-24 07:59:24
+  bride_name: MyString
+  groom_name: MyString
+  message: MyText
+
+two:
+  venue_name: MyString
+  open_time: 2025-11-24 07:59:24
+  start_time: 2025-11-24 07:59:24
+  bride_name: MyString
+  groom_name: MyString
+  message: MyText

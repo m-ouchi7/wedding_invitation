@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_23_050820) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_24_075924) do
   create_table "guest_answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "guest_id", null: false
     t.integer "attendance", limit: 1, null: false, unsigned: true
@@ -40,6 +40,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_23_050820) do
     t.string "middle_name", limit: 100
     t.string "last_name", limit: 100, null: false
     t.integer "guest_side", limit: 1, null: false, unsigned: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "invitation_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "venue_name", limit: 100, null: false
+    t.datetime "open_time", null: false
+    t.datetime "start_time", null: false
+    t.string "bride_name", limit: 100, null: false
+    t.string "groom_name", limit: 100, null: false
+    t.text "message", size: :long, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

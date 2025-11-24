@@ -1,0 +1,2 @@
+class InvitationInfo < ApplicationRecord
+end
