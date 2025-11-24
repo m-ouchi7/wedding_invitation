@@ -24,7 +24,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_23_050820) do
   create_table "guest_personal_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "guest_id", null: false
     t.string "email", null: false
-    t.string "phone", limit: 15
     t.string "postal_code", limit: 8, null: false
     t.integer "prefecture_code", limit: 2, null: false
     t.bigint "city_code", null: false
