@@ -2,24 +2,24 @@ module Api
   module V1
     class InvitationInfoController < ApplicationController
       def index
-        invitation_infos = InvitationInfo.find(1)
+        invitation_info = InvitationInfo.last
 
-        if invitation_infos
-          render json: {
-            venue_name: invitation_infos.venue_name,
-            postal_code: invitation_infos.postal_code,
-            address: invitation_infos.address,
-            open_time: invitation_infos.open_time,
-            start_time: invitation_infos.start_time,
-            bride_name: invitation_infos.bride_name,
-            groom_name: invitation_infos.groom_name,
-            message: invitation_infos.message
-          }, status: :ok
-
-        else
-          render json: {}, status: :not_found
-
+        if !invitation_info.present?
+          render json: {error: "Invitation info not found"}, status: :not_found
+          return
         end
+          
+        render json: {
+          venue_name: invitation_info.venue_name,
+          postal_code: invitation_info.postal_code,
+          address: invitation_info.address,
+          open_time: invitation_info.open_time,
+          start_time: invitation_info.start_time,
+          bride_name: invitation_info.bride_name,
+          groom_name: invitation_info.groom_name,
+          message: invitation_info.message
+        }, status: :ok
+
       end
     end
   end
