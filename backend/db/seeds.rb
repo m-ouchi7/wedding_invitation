@@ -9,7 +9,6 @@ if Guest.count == 0
   GuestPersonalInfo.create!(
     guest_id: guest.id,
     email: "taro.yamada@example.com",
-    phone: "090-1234-5678",
     postal_code: "100-0001",
     prefecture_code: "13",
     city_code: "13101",

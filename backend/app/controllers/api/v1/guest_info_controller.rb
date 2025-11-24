@@ -24,7 +24,6 @@ module Api
             middle_name: guest.middle_name,
             last_name: guest.last_name,
             guest_side: guest.guest_side,
-            phone: guest_personal_info.phone,
             postal_code: guest_personal_info.postal_code,
             prefecture_code: guest_personal_info.prefecture_code,
             city_code: guest_personal_info.city_code,
