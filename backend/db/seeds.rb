@@ -27,3 +27,20 @@ if Guest.count == 0
 else
   puts "⚠️ ユーザーデータは既に存在するためスキップしました。"
 end
+
+if InvitationInfo.count == 0
+  InvitationInfo.create!(
+    venue_name: "会場名",
+    postal_code: "100-0000",
+    address: "千代田区 丸の内一丁目 中央ビル10F",
+    open_time: "2026-05-20 17:00:00",
+    start_time: "2026-05-20 17:30:00",
+    bride_name: "鈴木花子",
+    groom_name: "田中一郎",
+    message: "新郎新婦からのメッセージ",
+  )
+
+  puts "✅ 招待状データを #{InvitationInfo.count} 件作成しました。"
+else
+  puts "⚠️ 招待状データは既に存在するためスキップしました。"
+end
