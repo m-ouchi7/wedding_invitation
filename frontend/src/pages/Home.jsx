@@ -4,11 +4,11 @@ import axios from "axios";
 // import { Box, Typography } from "@mui/material";
 
 export default function App() {
-  const [invitationInfo, setInvitationInfo] = useState([])
+  const [invitationInfo, setInvitationInfo] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/v1/invitation-info")
+    axios.get("/api/v1/invitation-info")
       .then(res => setInvitationInfo(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
