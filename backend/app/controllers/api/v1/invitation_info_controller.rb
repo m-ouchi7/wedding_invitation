@@ -5,7 +5,7 @@ module Api
         invitation_info = InvitationInfo.last
 
         if !invitation_info.present?
-          render json: {error: "Invitation info not found"}, status: :not_found
+          render json: {error: "INVITATION INFO NOT FOUND"}, status: :not_found
           return
         end
           
@@ -19,7 +19,6 @@ module Api
           groom_name: invitation_info.groom_name,
           message: invitation_info.message
         }, status: :ok
-
       end
     end
   end
