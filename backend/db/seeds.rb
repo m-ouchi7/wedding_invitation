@@ -28,7 +28,6 @@ else
   puts "⚠️ ユーザーデータは既に存在するためスキップしました。"
 end
 
-
 if InvitationInfo.count == 0
   InvitationInfo.create!(
     venue_name: "会場名",
