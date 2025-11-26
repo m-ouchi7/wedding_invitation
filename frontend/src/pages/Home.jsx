@@ -7,8 +7,13 @@ export default function App() {
   const [invitationInfo, setInvitationInfo] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    timeout: 5000,
+  });
+
   useEffect(() => {
-    axios.get("/api/v1/invitation-info")
+    api.get("/api/v1/invitation-info")
       .then(res => setInvitationInfo(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
