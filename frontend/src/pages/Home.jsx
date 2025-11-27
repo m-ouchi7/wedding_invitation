@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
-import axios from "axios";
-// import { Box, Typography } from "@mui/material";
+import axios from "axios"
+import { Box, Typography } from "@mui/material"
 
 export default function App() {
   const [invitationInfo, setInvitationInfo] = useState(null)
@@ -24,8 +24,7 @@ export default function App() {
 
   return (
     <>
-      <p>{invitationInfo.groom_name}</p>
-      {/* <Box component="dl" sx={{ width: 300 }}>
+      <Box component="dl" sx={{ width: 300 }}>
         <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>新郎</Typography>
         <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.groom_name}</Typography>
         
@@ -51,7 +50,7 @@ export default function App() {
         
         <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>開始時間</Typography>
         <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.start_time}</Typography>
-      </Box> */}
+      </Box>
     </>
   )
 }
