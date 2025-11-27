@@ -22,6 +22,7 @@ services:
       - DATABASE_USER=${MYSQL_USER}
       - DATABASE_PASSWORD=${MYSQL_PASSWORD}
       - DATABASE_NAME=${MYSQL_DATABASE}
+      - VITE_FRONT_URL=${VITE_FRONT_URL}
 
   frontend:
     build:
