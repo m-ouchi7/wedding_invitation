@@ -2,36 +2,54 @@ module Api
   module V1
     class GuestAnswerController < ApplicationController
       rescue_from StandardError, with: :handle_500
-      rescue_from ActiveRecord::RecordInvalid, with: :handle_422
 
       def create
-        ActiveRecord::Base.transaction do
-          guest = Guest.create!(
-            first_name: params[:first_name],
-            middle_name: params[:middle_name],
-            last_name: params[:last_name],
-            guest_side: params[:guest_side],
-          )
+        guest = Guest.new(
+          first_name: params[:first_name],
+          middle_name: params[:middle_name],
+          last_name: params[:last_name],
+          guest_side: params[:guest_side],
+        )
 
-          GuestPersonalInfo.create!(
-            guest_id: guest.id,
-            email: params[:email],
-            postal_code: params[:postal_code],
-            prefecture_code: params[:prefecture_code],
-            city_code: params[:city_code],
-            town: params[:town],
-            building: params[:building],
-          )
+        guest_personal_info = GuestPersonalInfo.new(
+          email: params[:email],
+          postal_code: params[:postal_code],
+          prefecture_code: params[:prefecture_code],
+          city_code: params[:city_code],
+          town: params[:town],
+          building: params[:building],
+        )
 
-          GuestAnswer.create!(
-            guest_id: guest.id,
-            attendance: params[:attendance],
-            allergy: params[:allergy],
-            message: params[:message],
-          )
-
-          render json: {}, status: :created # 200
+        guest_answer = GuestAnswer.new(
+          attendance: params[:attendance],
+          allergy: params[:allergy],
+          message: params[:message],
+        )
+  
+        # 各モデルの検証
+        errors = {}
+        errors[:guest] = guest.errors.full_messages unless guest.valid?
+        errors[:guest_personal_info] = guest_personal_info.errors.full_messages unless guest_personal_info.valid?
+        errors[:guest_answer] = guest_answer.errors.full_messages unless guest_answer.valid?
+  
+        # バリデーションエラー時 422
+        if errors.any?
+          render json: { message: errors }, status: :unprocessable_entity
+          return
         end
+  
+        # トランザクションで保存
+        ActiveRecord::Base.transaction do
+          guest.save!
+          guest_personal_info.guest_id = guest.id
+          guest_personal_info.save!
+          guest_answer.guest_id = guest.id
+          guest_answer.save!
+        end
+        
+        render json: {
+          "message": "#{guest.first_name}さんの情報が格納されました。"
+        }, status: :created # 200
       end
 
       private
@@ -52,13 +70,6 @@ module Api
           :allergy,
           :message
         )
-      end
-
-      # バリデーションエラー時 422
-      def handle_422(exception)
-        render json: {
-          "message": exception.record.errors.full_messages
-        }, status: :unprocessable_entity
       end
 
       # その他のエラー 500
