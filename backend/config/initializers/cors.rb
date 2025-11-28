@@ -7,7 +7,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
+<<<<<<< HEAD
     origins ENV["VITE_FRONT_URL"] #フロントのURLだけ許可
+=======
+    origins ENV["VITE_FRONT_URL"]
+>>>>>>> d9e27b9 (fix&refacter: remove json files, delete phone column, use environment variable)
     resource "*",
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
