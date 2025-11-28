@@ -7,8 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    # TODO: 本番フロントのURLに修正
-    origins "http://localhost:5173" #フロントのURLだけ許可
+    origins ENV["VITE_FRONT_URL"]
     resource "*",
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
