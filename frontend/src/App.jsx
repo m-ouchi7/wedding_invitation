@@ -1,3 +1,9 @@
+import React, { useState, useEffect} from 'react'
+import ReactDOM from 'react-dom/client'
+import Home from './pages/Home'
+
 export default function App() {
-  return <h1>Hello Vite + React!</h1>
+  return (
+    <Home />
+  )
 }
