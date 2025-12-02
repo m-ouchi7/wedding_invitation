@@ -13,7 +13,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    api.post("/api/v1/invitation-info")
+    api.get("/api/v1/invitation-info")
       .then(res => setInvitationInfo(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
