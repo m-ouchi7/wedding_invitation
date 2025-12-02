@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import axios from "axios"
 import { Box, Typography } from "@mui/material"
 
-export default function App() {
+export default function Home() {
   const [invitationInfo, setInvitationInfo] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -13,7 +13,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    api.get("/api/v1/invitation-info")
+    api.post("/api/v1/invitation-info")
       .then(res => setInvitationInfo(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
