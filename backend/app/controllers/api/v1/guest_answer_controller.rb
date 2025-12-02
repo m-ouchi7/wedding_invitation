@@ -3,6 +3,14 @@ module Api
     class GuestAnswerController < ApplicationController
       rescue_from StandardError, with: :handle_500
 
+      class ValidationError < StandardError
+        attr_reader :errors
+        def initialize(errors)
+          @errors = errors
+          super("Validation failed")
+        end
+      end
+
       def create
         guest = Guest.new(
           first_name: params[:first_name],
@@ -11,24 +19,17 @@ module Api
           guest_side: params[:guest_side],
         )
 
-        # # 各モデルの検証
-        # errors = {}
-        # errors[:guest] = guest.errors.full_messages unless guest.valid?
-        # errors[:guest_personal_info] = guest_personal_info.errors.full_messages unless guest_personal_info.valid?
-        # errors[:guest_answer] = guest_answer.errors.full_messages unless guest_answer.valid?
-
-        # 先にguestモデルのみ検証 422
         if guest.invalid?
-          render json: { message: guest.errors.full_messages }, status: :unprocessable_entity
-          return
+          render json: { error: guest.errors.to_hash }, status: :unprocessable_entity
+          return 
         end
   
-        # トランザクションで保存
+        # 保存
         ActiveRecord::Base.transaction do
-          guest.save!
+          guest.save! # guest_idが確定
 
           guest_personal_info = GuestPersonalInfo.new(
-            guest_id: guest.id,
+            guest_id: guest.id, # 確定したguest_idを入力
             email: params[:email],
             postal_code: params[:postal_code],
             prefecture_code: params[:prefecture_code],
@@ -38,32 +39,32 @@ module Api
           )
 
           guest_answer = GuestAnswer.new(
-            guest_id: guest.id,
+            guest_id: guest.id, # 確定したguest_idを入力
             attendance: params[:attendance],
             allergy: params[:allergy],
             message: params[:message],
           )
           
-          # 残り２つのモデルの検証
-          errors = {}
-          # errors[:guest] = guest.errors.full_messages unless guest.valid?
-          errors[:guest_personal_info] = guest_personal_info.errors.full_messages unless guest_personal_info.valid?
-          errors[:guest_answer] = guest_answer.errors.full_messages unless guest_answer.valid?
-    
-          # バリデーションエラー時 422
-          if errors.any?
-            render json: { message: errors }, status: :unprocessable_entity
-            return
+          # バリデーション
+          errors_messages = {}
+          errors_messages.merge!(guest_personal_info.errors.to_hash) unless guest_personal_info.valid?
+          errors_messages.merge!(guest_answer.errors.to_hash) unless guest_answer.valid?
+
+          if errors_messages.any?
+            # rollbackさせると同時に例外で外に出す
+            raise ValidationError.new(errors_messages)
           end
-          # guest_personal_info.guest_id = guest.id
+
           guest_personal_info.save!
-          # guest_answer.guest_id = guest.id
           guest_answer.save!
         end
         
         render json: {
           "message": "#{guest.first_name}さんの情報が格納されました。"
         }, status: :created # 200
+
+      rescue ValidationError => e
+        render json: { error: e.errors }, status: :unprocessable_entity
       end
 
       private
