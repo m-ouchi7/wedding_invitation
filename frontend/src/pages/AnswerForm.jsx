@@ -8,12 +8,9 @@ import ArrowRight from "@mui/icons-material/ArrowRight"
 
 export default function AnswerForm() {
   const navigate = useNavigate()
-  const [data, setData] = useState(null)
-  const [isConfirm, setIsConfirm] = useState(true)
-  // const [isConfirm, setIsConfirm] = useState(false)
+  const [isConfirm, setIsConfirm] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  // const [isShowSentForm, setIsShowSentForm] = useState(false)
-  const [isShowSentForm, setIsShowSentForm] = useState(true)
+  const [showSubmitted, setShowSubmitted] = useState(false)
   const [formValues, setFormValues] = useState({
     first_name: "",
     middle_name: "",
@@ -109,7 +106,7 @@ export default function AnswerForm() {
     e.preventDefault()
     try {
       await api.post("/api/v1/guest-answer", formValues)
-      setIsSubmitted(true)
+      setShowSubmitted(true)
     } catch (err) {
       console.error(err)
       alert("送信エラーが発生しました。")
@@ -118,7 +115,7 @@ export default function AnswerForm() {
   }
 
   // 送信後の画面
-  if (isSubmitted) {
+  if (showSubmitted) {
     return (
       <Stack
         spacing={4}
@@ -143,8 +140,8 @@ export default function AnswerForm() {
             color="primary"
             sx={{width: "60%"}}
             onClick={() => {
-              setIsConfirm(true)
-              setIsShowSentForm(true)
+              setShowSubmitted(false)
+              setIsSubmitted(true)
             }}
           >
             回答内容を確認する
@@ -161,6 +158,7 @@ export default function AnswerForm() {
         </Stack>
       </Stack>
     )
+
   // 入力中/確認中の画面
   } else {
     return (
@@ -177,13 +175,13 @@ export default function AnswerForm() {
             </Typography>
             <FormControl
               disabled={isConfirm}
+              sx={{ "& .MuiFormControlLabel-label.Mui-disabled": { color: "#000" } }}
             >
               <RadioGroup
                 row
                 name="attendance"
                 value={formValues.attendance}
                 onChange={handleChange}
-                sx={{ "& .MuiFormControlLabel-label.Mui-disabled": { color: "#000" } }}
                 >
                 <FormControlLabel value="1" control={<Radio />} label="ご出席" />
                 <FormControlLabel value="0" control={<Radio />} label="ご欠席" />
@@ -235,13 +233,13 @@ export default function AnswerForm() {
             </Typography>
             <FormControl
               disabled={isConfirm}
+              sx={{ "& .MuiFormControlLabel-label.Mui-disabled": { color: "#000" } }}
             >
               <RadioGroup
                 row
                 name="guest_side"
                 value={formValues.guest_side}
                 onChange={handleChange}
-                sx={{ "& .MuiFormControlLabel-label.Mui-disabled": { color: "#000" } }}
                 >
                 <FormControlLabel value="1" control={<Radio />} label="新郎" />
                 <FormControlLabel value="0" control={<Radio />} label="新婦" />
@@ -372,7 +370,7 @@ export default function AnswerForm() {
         
           <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
             {/* 確認中 */}
-            {isConfirm && !isShowSentForm && (
+            {isConfirm && !isSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -383,8 +381,9 @@ export default function AnswerForm() {
                 入力し直す
               </Button>
             )}
+            
             {/* 入力中は確認ボタン、確認中は送信ボタンを表示 */}
-            {!isShowSentForm && (
+            {!isSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -395,8 +394,9 @@ export default function AnswerForm() {
                 { isConfirm ? "送信する" : "入力内容を確認する" }
               </Button>
             )}
+
             {/* 送信後 */}
-            {isShowSentForm && (
+            {isSubmitted && (
               <Button
                     variant="outlined"
                     endIcon={<ArrowRight />}
