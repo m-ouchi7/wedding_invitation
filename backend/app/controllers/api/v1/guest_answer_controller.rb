@@ -46,9 +46,9 @@ module Api
           )
           
           # バリデーション
-          errors_messages = {}
-          errors_messages.merge!(guest_personal_info.errors.to_hash) unless guest_personal_info.valid?
-          errors_messages.merge!(guest_answer.errors.to_hash) unless guest_answer.valid?
+          errors_messages = []
+          errors_messages.concat(guest_personal_info.errors.full_messages) if guest_personal_info.invalid?
+          errors_messages.concat(guest_answer.errors.full_messages) if guest_answer.invalid?
 
           if errors_messages.any?
             # rollbackさせると同時に例外で外に出す
