@@ -59,9 +59,7 @@ module Api
           guest_answer.save!
         end
         
-        render json: {
-          "message": "#{guest.first_name}さんの情報が格納されました。"
-        }, status: :created # 200
+        render json: {}, status: :created # 200
 
       rescue ValidationError => e
         render json: { error: e.errors }, status: :unprocessable_entity
