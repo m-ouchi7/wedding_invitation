@@ -1,18 +1,23 @@
 import React, { useState, useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import Submit from './pages/Submit'
+import AnswerForm from './pages/AnswerForm'
 import { Box } from "@mui/material"
 
 export default function App() {
   return (
-    // <Home />
     <Box
       display="flex"
       alignItems="center"
-      sx={{ maxWidth: 393, mx: "auto", p: "0 20px" }}
+      sx={{ maxWidth: 393, mx: "auto", p: "20px" }}
     >
-      <Submit />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/form" element={<AnswerForm />} />
+        </Routes>
+      </BrowserRouter>
     </Box>
   )
 }
