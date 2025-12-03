@@ -65,8 +65,8 @@ class GuestSubmissionForm
     true
   rescue ActiveRecord::RecordInvalid => e
     # 各モデルのバリデーションエラーをまとめる
-    e.record.errors.each do |attr, msg|
-      errors.add(attr, msg)
+    e.record.errors.full_messages.each do |msg|
+      errors.add(:base, msg)
     end
     false
   end

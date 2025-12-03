@@ -7,13 +7,11 @@ module Api
         form = GuestSubmissionForm.new(guest_params)
 
         if form.submit
-          render json: {
-            "message": "#{form.guest.first_name}さんの情報が格納されました。"
-          }, status: :created # 200
+          render json: {}, status: :created # 200
 
         else
           render json: {
-            error: form.errors.to_hash(true)
+            error: form.errors.full_messages
           }, status: :unprocessable_entity # 422
         end
       end
