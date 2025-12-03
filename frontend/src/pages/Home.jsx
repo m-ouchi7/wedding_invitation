@@ -1,9 +1,12 @@
 import React, { useState, useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
+import { useNavigate } from 'react-router-dom'
 import axios from "axios"
-import { Box, Typography } from "@mui/material"
+import { Box, Stack, Typography, Button } from "@mui/material"
+import Edit from "@mui/icons-material/Edit"
 
 export default function Home() {
+  const navigate = useNavigate()
   const [invitationInfo, setInvitationInfo] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -23,34 +26,59 @@ export default function Home() {
   if (!invitationInfo) return <p>データが見つかりません</p>
 
   return (
-    <>
-      <Box component="dl" sx={{ width: 300 }}>
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>新郎</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.groom_name}</Typography>
+    <Stack
+      spacing={6}
+      display="flex"
+      alignItems="center"
+      sx={{ width: "100%" }}
+          >
+      <Stack
+        spacing={2}
+        display="flex"
+        alignItems="center"
+        sx={{ width: "100%" }}
+      >
+        <Typography sx={{ fontWeight: "bold"}}>新郎</Typography>
+        <Typography>{invitationInfo.groom_name}</Typography>
         
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>新婦</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.bride_name}</Typography>
+        <Typography sx={{ fontWeight: "bold"}}>新婦</Typography>
+        <Typography>{invitationInfo.bride_name}</Typography>
         
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>メッセージ</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.message}</Typography>
-      </Box>
+        <Typography sx={{ fontWeight: "bold"}}>メッセージ</Typography>
+        <Typography>{invitationInfo.message}</Typography>
+      </Stack>
 
-      <Box component="dl" sx={{ width: 300 }}>
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>会場</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.venue_name}</Typography>
+      <Stack
+        spacing={2}
+        display="flex"
+        alignItems="center"
+        sx={{ width: "100%" }}
+      >
+        <Typography sx={{ fontWeight: "bold"}}>会場</Typography>
+        <Typography>{invitationInfo.venue_name}</Typography>
         
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>住所</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>
+        <Typography sx={{ fontWeight: "bold"}}>住所</Typography>
+        <Typography>
           {invitationInfo.postal_code}
           {invitationInfo.address}
         </Typography>
         
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>開場時間</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.open_time}</Typography>
+        <Typography sx={{ fontWeight: "bold"}}>開場時間</Typography>
+        <Typography>{invitationInfo.open_time}</Typography>
         
-        <Typography component="dt" sx={{ fontWeight: "bold", mt: 1 }}>開始時間</Typography>
-        <Typography component="dd" sx={{ ml: 2 }}>{invitationInfo.start_time}</Typography>
-      </Box>
-    </>
+        <Typography sx={{ fontWeight: "bold"}}>開始時間</Typography>
+        <Typography>{invitationInfo.start_time}</Typography>
+      </Stack>
+
+      <Button
+        variant="contained"
+        startIcon={<Edit />}
+        color="primary"
+        size="medium"
+        onClick={ () => navigate("/form") }
+      >
+        回答する
+      </Button>
+    </Stack>
   )
 }
