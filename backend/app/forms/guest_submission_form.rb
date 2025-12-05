@@ -2,31 +2,46 @@ class GuestSubmissionForm
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  # Guest の属性
-  attr_accessor :first_name, :middle_name, :last_name, :guest_side
-  
-  # GuestPersonalInfo の属性
-  attr_accessor :email, :postal_code, :prefecture_code, :city_code, :town, :building
-
-  # GuestAnswer の属性
-  attr_accessor :attendance, :allergy, :message
-
   # モデルインスタンス
   attr_reader :guest, :guest_personal_info, :guest_answer
 
-  # バリデーション
   # Guest
-  validates :first_name, presence: true, length: { maximum: 100 }
-  validates :middle_name, length: { minimum: 1, maximum: 100 }, allow_blank: true
-  validates :last_name, presence: true, length: { maximum: 100 }
-  validates :guest_side, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 1 }
+  attribute :first_name, :string
+  attribute :middle_name, :string
+  attribute :last_name, :string
+  attribute :guest_side, :integer
+  
   # GuestPersonalInfo
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP}, length: { maximum: 255 }
-  validates :postal_code, presence: true, length: { maximum: 8 }
-  validates :prefecture_code, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 99 }
-  validates :city_code, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 99999 }
-  validates :town, presence: true, length: { maximum: 100 }
+  attribute :email, :string
+  attribute :postal_code, :string
+  attribute :prefecture_code, :integer
+  attribute :city_code, :integer
+  attribute :town, :string
+  attribute :building, :string
+
+  # GuestAnswer
+  attribute :attendance, :integer
+  attribute :allergy, :string
+  attribute :message, :string
+
+  # Guest
+  with_options presence: true do
+    validates :first_name, length: { maximum: 100 }
+    validates :last_name, length: { maximum: 100 }
+    validates :guest_side, numericality: { only_integer: true, less_than_or_equal_to: 1 }
+  end
+  validates :middle_name, length: { minimum: 1, maximum: 100 }, allow_blank: true
+
+  # GuestPersonalInfo
+  with_options presence: true do
+    validates :email, format: { with: URI::MailTo::EMAIL_REGEXP}, length: { maximum: 255 }
+    validates :postal_code, length: { maximum: 8 }
+    validates :city_code, numericality: { only_integer: true, less_than_or_equal_to: 99999}
+    validates :prefecture_code, numericality: { only_integer: true, less_than_or_equal_to: 99}
+    validates :town, length: { maximum: 100 }
+  end
   validates :building, length: { maximum: 100 }
+
   # GuestAnswer
   validates :attendance, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 1 }
 
@@ -34,7 +49,6 @@ class GuestSubmissionForm
     return false unless valid?
 
     ActiveRecord::Base.transaction do
-      # Guest を作成
       @guest = Guest.create!(
         first_name: first_name,
         middle_name: middle_name,
@@ -42,7 +56,6 @@ class GuestSubmissionForm
         guest_side: guest_side
       )
       
-      # GuestPersonalInfo を作成
       @guest_personal_info = GuestPersonalInfo.create!(
         guest_id: @guest.id,
         email: email,
@@ -53,7 +66,6 @@ class GuestSubmissionForm
         building: building
       )
       
-      # GuestAnswer を作成
       @guest_answer = GuestAnswer.create!(
         guest_id: @guest.id,
         attendance: attendance,
