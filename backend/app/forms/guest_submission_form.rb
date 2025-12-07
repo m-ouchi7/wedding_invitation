@@ -45,27 +45,6 @@ class GuestSubmissionForm
   # GuestAnswer
   validates :attendance, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 1 }
 
-  MAPPING = {
-    # Guest
-    first_name: :first_name,
-    middle_name: :middle_name,
-    last_name: :last_name,
-    guest_side: :guest_side,
-    
-    # GuestPersonalInfo
-    email: :email,
-    postal_code: :postal_code,
-    prefecture_code: :prefecture_code,
-    city_code: :city_code,
-    town: :town,
-    building: :building,
-
-    # GuestAnswer
-    attendance: :attendance,
-    allergy: :allergy,
-    message: :message,
-  }
-
   def submit
     return false unless valid?
 
@@ -96,21 +75,6 @@ class GuestSubmissionForm
     end
 
     true
-  rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error "ActiveRecord::RecordInvalid を捕捉"
-
-    invalid_messages = e.record.errors
-
-    invalid_messages.details.each do |attribute, details|
-      details.each do |detail|
-        message = invalid_messages.generate_message(attribute, detail[:error], detail.except(:error))
-
-        unless errors.added?(attribute, message)
-          errors.add(attribute, message)
-        end
-      end
-    end
-    false
   
   # DB規約違反を捕捉
   rescue ActiveRecord::StatementInvalid, Mysql2::Error => e
