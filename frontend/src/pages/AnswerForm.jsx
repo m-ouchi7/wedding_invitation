@@ -40,8 +40,10 @@ export default function AnswerForm() {
 
   const validation = async (e) => {
     e.preventDefault()
+    console.log(formValues)
     
     try {
+      console.log("バリデーション")
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
       console.log(res)
       setErrors({})
@@ -64,6 +66,7 @@ export default function AnswerForm() {
   
   const handleToConfirm = async (e) => {
     e.preventDefault()
+    console.log(formValues)
     const isValid = await validation(e)
     if (isValid) {
       setIsConfirm(true)
