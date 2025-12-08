@@ -42,24 +42,21 @@ export default function AnswerForm() {
     e.preventDefault()
     
     try {
-      const res = await api.post("/api/v1/guest-answer", formValues)
-      if (res.ok) {
-        setErrors({})
-        setIsConfirm(true)
-        return true
-      } else {
-        throw new Error('サーバーエラー')
-      }
-
+      const res = await api.post("/api/v1/guest-answer_validate", formValues)
+      console.log(res)
+      setErrors({})
+      return true
+      
     } catch (err) {
-      const status = err.response ? err.status : null
+      const status = err.response ? err.response.status : null
 
       if (status === 422) {
         const errorData = err.response.data.error
         setErrors(errorData)
+        console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("バリデーションエラーが発生しました")
+        alert("サーバーまたはネットワークエラーが発生しました。")
       }
       return false
     }
@@ -67,20 +64,17 @@ export default function AnswerForm() {
   
   const handleToConfirm = async (e) => {
     e.preventDefault()
-
     const isValid = await validation(e)
     if (isValid) {
-      setErrors({})
       setIsConfirm(true)
     }
-    console.log(errors)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      await api.post("/api/v1/guest-answer", formValues)
+      await api.post("/api/v1/guest-answer_create", formValues)
       setShowSubmitted(true)
     } catch (err) {
       console.error(err)
