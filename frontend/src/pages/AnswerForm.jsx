@@ -26,21 +26,7 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    guest_side: "",
-    email: "",
-    postal_code: "",
-    prefecture_code: "",
-    city_code: "",
-    town: "",
-    building: "",
-    attendance: "",
-    allergy: "",
-    message: ""
-  })
+  const [errors, setErrors] = useState({})
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -52,65 +38,53 @@ export default function AnswerForm() {
     setFormValues((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleToConfirm = (e) => {
+  const validation = async (e) => {
     e.preventDefault()
+    
+    try {
+      const res = await api.post("/api/v1/guest-answer", formValues)
+      if (res.ok) {
+        setErrors({})
+        setIsConfirm(true)
+        return true
+      } else {
+        throw new Error('サーバーエラー')
+      }
 
-    // バリデーションを通過したら確認画面を表示
-    if (validation()) {
-      setIsConfirm(true)
+    } catch (err) {
+      const status = err.response ? err.status : null
+
+      if (status === 422) {
+        const errorData = err.response.data.error
+        setErrors(errorData)
+      } else {
+        console.error(err)
+        alert("バリデーションエラーが発生しました")
+      }
+      return false
     }
   }
+  
+  const handleToConfirm = async (e) => {
+    e.preventDefault()
 
-  const validation = () => {
-    const newErrors = {}
-
-    if (!formValues.last_name.trim()) {
-      newErrors.last_name = "姓を入力してください"
+    const isValid = await validation(e)
+    if (isValid) {
+      setErrors({})
+      setIsConfirm(true)
     }
-
-    if (!formValues.first_name.trim()) {
-      newErrors.first_name = "名を入力してください"
-    }
-
-    if (!formValues.email.trim()) {
-      newErrors.email = "メールアドレスを入力してください"
-    } else if (!/^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(formValues.email)) {
-      newErrors.email = "正しいメールアドレスを入力してください"
-    }
-
-    if (!formValues.postal_code.trim()) {
-      newErrors.postal_code = "郵便番号を入力してください"
-    } else if (formValues.postal_code.length > 9) {
-      newErrors.postal_code = "８文字以内で入力してください"
-    }
-
-    if (formValues.prefecture_code === "0") {
-      newErrors.prefecture_code = "都道府県を選択してください"
-    }
-
-    if (!formValues.city_code.trim()) {
-      newErrors.city_code = "市区町村名を入力してください"
-    }
-
-    if (!formValues.town.trim()) {
-      newErrors.town = "町名を入力してください"
-    }
-
-    setErrors(newErrors)
-
-    // エラーが1つもなければtrueを返す
-    return Object.keys(newErrors).length === 0
+    console.log(errors)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     try {
       await api.post("/api/v1/guest-answer", formValues)
       setShowSubmitted(true)
     } catch (err) {
       console.error(err)
-      alert("送信エラーが発生しました。")
-      setIsConfirm(false)
+      alert("サーバーエラーが発生しました")
     }
   }
 
