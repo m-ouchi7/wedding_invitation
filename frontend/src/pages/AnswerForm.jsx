@@ -40,7 +40,8 @@ export default function AnswerForm() {
 
   const validation = async (e) => {
     e.preventDefault()
-    
+    // TODO: 2つ以上のバリデーションエラーが出た後、一つを修正すると、２回目以降が通ってしまう現象を修正する
+    // TODO: jsxをtsxにする
     try {
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
       console.log(res)
