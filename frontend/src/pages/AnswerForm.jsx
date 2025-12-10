@@ -40,7 +40,9 @@ export default function AnswerForm() {
 
   const validation = async (e) => {
     e.preventDefault()
-    console.log(formValues)
+    // TODO: 2つ以上のバリデーションエラーが出た後、一つを修正すると、２回目以降が通ってしまう現象を修正する
+    // TODO: 市区町村の入力をselect要素にする
+    // TODO: jsxをtsxにする
     
     try {
       console.log("バリデーション")
