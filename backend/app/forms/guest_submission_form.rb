@@ -1,6 +1,4 @@
-class GuestSubmissionForm
-  include ActiveModel::Model
-  include ActiveModel::Attributes
+class GuestSubmissionForm < BaseForm
 
   # モデルインスタンス
   attr_reader :guest, :guest_personal_info, :guest_answer
@@ -87,13 +85,5 @@ class GuestSubmissionForm
 
     Rails.logger.error "DB制約違反を捕捉: #{e.class.name}: #{e.message}"
     false
-  end
-
-  # errors.messagesではja.ymlの format: "%{attribute}%{message}" が使用できないため
-  # full_messages_forで完全な日本語メッセージを値として設定する
-  def json_errors
-    errors.details.keys.each_with_object({}) do |attribute, hash|
-      hash[attribute] = errors.full_messages_for(attribute)
-    end
   end
 end
