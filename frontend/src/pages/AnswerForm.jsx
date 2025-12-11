@@ -40,14 +40,9 @@ export default function AnswerForm() {
 
   const validation = async (e) => {
     e.preventDefault()
-    // TODO: 2つ以上のバリデーションエラーが出た後、一つを修正すると、２回目以降が通ってしまう現象を修正する
-    // TODO: 市区町村の入力をselect要素にする
-    // TODO: jsxをtsxにする
     
     try {
-      console.log("バリデーション")
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
-      console.log(res)
       setErrors({})
       return true
       
@@ -120,11 +115,11 @@ export default function AnswerForm() {
             回答内容を確認する
           </Button>
           <Button
-                variant="outlined"
-                endIcon={<ArrowRight />}
-                color="success"
-                sx={{width: "60%"}}
-                onClick={ () => navigate("/") }
+            variant="outlined"
+            endIcon={<ArrowRight />}
+            color="success"
+            sx={{width: "60%"}}
+            onClick={ () => navigate("/") }
           >
             招待状ページへ戻る
           </Button>
