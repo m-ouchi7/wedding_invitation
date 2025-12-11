@@ -26,7 +26,21 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    guest_side: "1",
+    email: "",
+    postal_code: "",
+    prefecture_code: "0",
+    city_code: "",
+    town: "",
+    building: "",
+    attendance: "1",
+    allergy: "",
+    message: ""
+  })
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
