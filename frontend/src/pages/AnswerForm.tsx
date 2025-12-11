@@ -6,12 +6,32 @@ import axios from "axios"
 import { Box, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button, Typography, TextField, Stack, Select, MenuItem, InputLabel } from "@mui/material"
 import ArrowRight from "@mui/icons-material/ArrowRight"
 
-export default function AnswerForm() {
+interface FormValues {
+  first_name: string,
+  middle_name: string,
+  last_name: string,
+  guest_side: string,
+  email: string,
+  postal_code: string,
+  prefecture_code: string,
+  city_code: string,
+  town: string,
+  building: string,
+  attendance: string,
+  allergy: string,
+  message: string
+}
+
+type FormErrors = {
+  [K in keyof FormValues]?: string | string[]
+}
+
+export default function AnswerForm(): JSX.Element {
   const navigate = useNavigate()
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [showSubmitted, setShowSubmitted] = useState(false)
-  const [formValues, setFormValues] = useState({
+  const [isConfirm, setIsConfirm] = useState<boolean>(false)
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
+  const [showSubmitted, setShowSubmitted] = useState<boolean>(false)
+  const [formValues, setFormValues] = useState<FormValues>({
     first_name: "",
     middle_name: "",
     last_name: "",
@@ -26,19 +46,19 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 5000,
   });
   
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | TextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target
-    setFormValues((prev) => ({ ...prev, [name]: value }))
+    setFormValues((prev) => ({ ...prev, [name]: value as string }))
   }
 
-  const validation = async (e) => {
+  const validation = async (e: FormEvent): Promise<boolean> => {
     e.preventDefault()
     
     try {
@@ -50,7 +70,7 @@ export default function AnswerForm() {
       const status = err.response ? err.response.status : null
 
       if (status === 422) {
-        const errorData = err.response.data.error
+        const errorData = err.response.data.error as FormErrors
         setErrors(errorData)
         console.log("Validation Failed: ", errorData)
       } else {
@@ -61,7 +81,7 @@ export default function AnswerForm() {
     }
   }
   
-  const handleToConfirm = async (e) => {
+  const handleToConfirm = async (e: FormEvent) => {
     e.preventDefault()
     console.log(formValues)
     const isValid = await validation(e)
@@ -70,7 +90,7 @@ export default function AnswerForm() {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     try {
