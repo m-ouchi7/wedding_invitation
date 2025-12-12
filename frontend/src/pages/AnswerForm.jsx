@@ -9,8 +9,8 @@ import ArrowRight from "@mui/icons-material/ArrowRight"
 export default function AnswerForm() {
   const navigate = useNavigate()
   const [isConfirm, setIsConfirm] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [showSubmitted, setShowSubmitted] = useState(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+  const [showThanksPage, setShowThanksPage] = useState(false)
   const [formValues, setFormValues] = useState({
     first_name: "",
     middle_name: "",
@@ -75,7 +75,7 @@ export default function AnswerForm() {
 
     try {
       await api.post("/api/v1/guest-answer_create", formValues)
-      setShowSubmitted(true)
+      setShowThanksPage(true)
     } catch (err) {
       console.error(err)
       alert("サーバーエラーが発生しました")
@@ -83,7 +83,7 @@ export default function AnswerForm() {
   }
 
   // 送信後の画面
-  if (showSubmitted) {
+  if (showThanksPage) {
     return (
       <Stack
         spacing={4}
@@ -108,8 +108,8 @@ export default function AnswerForm() {
             color="primary"
             sx={{width: "60%"}}
             onClick={() => {
-              setShowSubmitted(false)
-              setIsSubmitted(true)
+              setShowThanksPage(false)
+              setIsFormSubmitted(true)
             }}
           >
             回答内容を確認する
@@ -119,7 +119,7 @@ export default function AnswerForm() {
             endIcon={<ArrowRight />}
             color="success"
             sx={{width: "60%"}}
-            onClick={ () => navigate("/") }
+            onClick={ () => navigate("/home") }
           >
             招待状ページへ戻る
           </Button>
@@ -338,7 +338,7 @@ export default function AnswerForm() {
         
           <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
             {/* 確認中 */}
-            {isConfirm && !isSubmitted && (
+            {isConfirm && !isFormSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -351,7 +351,7 @@ export default function AnswerForm() {
             )}
             
             {/* 入力中は確認ボタン、確認中は送信ボタンを表示 */}
-            {!isSubmitted && (
+            {!isFormSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -364,13 +364,13 @@ export default function AnswerForm() {
             )}
 
             {/* 送信後 */}
-            {isSubmitted && (
+            {isFormSubmitted && (
               <Button
                     variant="outlined"
                     endIcon={<ArrowRight />}
                     color="success"
                     sx={{width: "60%"}}
-                    onClick={ () => navigate("/") }
+                    onClick={ () => navigate("/home") }
               >
                 招待状ページへ戻る
               </Button>
