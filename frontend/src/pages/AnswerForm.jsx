@@ -18,7 +18,7 @@ export default function AnswerForm() {
     guest_side: "1",
     email: "",
     postal_code: "",
-    prefecture_code: "0",
+    prefecture_code: " ", // 初期値設定とバリデーションのため半角スペースを入れている
     city_code: "",
     town: "",
     building: "",
@@ -26,21 +26,7 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    guest_side: "1",
-    email: "",
-    postal_code: "",
-    prefecture_code: "0",
-    city_code: "",
-    town: "",
-    building: "",
-    attendance: "1",
-    allergy: "",
-    message: ""
-  })
+  const [errors, setErrors] = useState({})
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -273,7 +259,7 @@ export default function AnswerForm() {
                 sx={{ "& .MuiInputBase-input.Mui-disabled": { WebkitTextFillColor: "#000" } }}
                 fullWidth
               >
-                <MenuItem key="0" value="0">都道府県を選択してください</MenuItem>
+                <MenuItem key="0" value=" ">都道府県を選択してください</MenuItem>
                 {PREFECTURES.map(p => (
                   <MenuItem key={p.code} value={p.code}>{ p.name }</MenuItem>
                 ))}
