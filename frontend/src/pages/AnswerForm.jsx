@@ -75,9 +75,7 @@ export default function AnswerForm() {
   
   const handleToConfirm = async (e) => {
     e.preventDefault()
-    console.log(formValues)
     const isValid = await validation()
-
     if (isValid) {
       setIsConfirm(true)
     }
