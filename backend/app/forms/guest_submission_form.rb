@@ -1,6 +1,4 @@
-class GuestSubmissionForm
-  include ActiveModel::Model
-  include ActiveModel::Attributes
+class GuestSubmissionForm < BaseForm
 
   # モデルインスタンス
   attr_reader :guest, :guest_personal_info, :guest_answer
