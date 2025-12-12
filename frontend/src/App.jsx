@@ -14,8 +14,8 @@ export default function App() {
     >
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/form" element={<AnswerForm />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/answerForm" element={<AnswerForm />} />
         </Routes>
       </BrowserRouter>
     </Box>
