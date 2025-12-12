@@ -42,8 +42,8 @@ export default function AnswerForm() {
     e.preventDefault()
     
     try {
-      const res = await api.post("/api/v1/guest-answer_validate", formValues)
       setErrors({})
+      const res = await api.post("/api/v1/guest-answer_validate", formValues)
       return true
       
     } catch (err) {
@@ -55,7 +55,7 @@ export default function AnswerForm() {
         console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("サーバーまたはネットワークエラーが発生しました。")
+        alert("サーバーまたはネットワークエラーが発生しました。お手数ですがもう一度入力の上、送信してください。何度も続く場合は主催者に問い合わせてください。")
       }
       return false
     }
