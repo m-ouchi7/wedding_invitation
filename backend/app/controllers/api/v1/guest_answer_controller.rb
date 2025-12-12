@@ -5,7 +5,7 @@ module Api
 
       def validate
         form = GuestSubmissionForm.new(guest_params)
-        if form.validate_only
+        if form.valid?
           render json: {}, status: :ok # 200
         
         else
