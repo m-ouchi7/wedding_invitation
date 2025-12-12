@@ -16,7 +16,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    api.get("/api/v1/invitation-info")
+    api.get("/api/v1/invitation_info")
       .then(res => setInvitationInfo(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false))

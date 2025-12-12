@@ -42,7 +42,7 @@ export default function AnswerForm() {
     e.preventDefault()
     
     try {
-      const res = await api.post("/api/v1/guest-answer_validate", formValues)
+      const res = await api.post("/api/v1/guest_answer/validate", formValues)
       setErrors({})
       return true
       
@@ -74,7 +74,7 @@ export default function AnswerForm() {
     e.preventDefault()
 
     try {
-      await api.post("/api/v1/guest-answer_create", formValues)
+      await api.post("/api/v1/guest_answer", formValues)
       setShowSubmitted(true)
     } catch (err) {
       console.error(err)
