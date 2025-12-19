@@ -40,8 +40,8 @@ export default function AnswerForm() {
 
   const validation = async () => {
     try {
+      setErrors({})
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
-      setErrors({}) // バリデーション成功時にエラーをクリアする
       return true
       
     } catch (err) {
