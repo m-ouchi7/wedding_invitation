@@ -5,6 +5,12 @@ import Home from './pages/Home'
 import AnswerForm from './pages/AnswerForm'
 import { Box } from "@mui/material"
 
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+
 export default function App(): JSX.Element {
   return (
     <Box
