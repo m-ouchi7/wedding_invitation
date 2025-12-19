@@ -53,7 +53,7 @@ export default function AnswerForm() {
         console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("サーバーまたはネットワークエラーが発生しました。お手数ですがもう一度入力の上、送信してください。何度も続く場合は主催者に問い合わせてください。")
+        alert("サーバーまたはネットワークエラーが発生しました。何度も続く場合は主催者に問い合わせてください。")
       }
       return false
     }
