@@ -29,8 +29,8 @@ type FormErrors = {
 export default function AnswerForm(): JSX.Element {
   const navigate = useNavigate()
   const [isConfirm, setIsConfirm] = useState<boolean>(false)
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-  const [showSubmitted, setShowSubmitted] = useState<boolean>(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false)
+  const [showThanksPage, setShowThanksPage] = useState<boolean>(false)
   const [formValues, setFormValues] = useState<FormValues>({
     first_name: "",
     middle_name: "",
@@ -38,7 +38,7 @@ export default function AnswerForm(): JSX.Element {
     guest_side: "1",
     email: "",
     postal_code: "",
-    prefecture_code: "0",
+    prefecture_code: " ", // 初期値設定とバリデーションのため半角スペースを入れている
     city_code: "",
     town: "",
     building: "",
@@ -58,9 +58,7 @@ export default function AnswerForm(): JSX.Element {
     setFormValues((prev) => ({ ...prev, [name]: value as string }))
   }
 
-  const validation = async (e: FormEvent): Promise<boolean> => {
-    e.preventDefault()
-    
+  const validation = async (): Promise<boolean> => {
     try {
       setErrors({})
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
@@ -75,7 +73,7 @@ export default function AnswerForm(): JSX.Element {
         console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("サーバーまたはネットワークエラーが発生しました。お手数ですがもう一度入力の上、送信してください。何度も続く場合は主催者に問い合わせてください。")
+        alert("サーバーまたはネットワークエラーが発生しました。何度も続く場合は主催者に問い合わせてください。")
       }
       return false
     }
@@ -83,7 +81,7 @@ export default function AnswerForm(): JSX.Element {
   
   const handleToConfirm = async (e: FormEvent) => {
     e.preventDefault()
-    const isValid = await validation(e)
+    const isValid = await validation()
     if (isValid) {
       setIsConfirm(true)
     }
@@ -281,7 +279,7 @@ export default function AnswerForm(): JSX.Element {
                 sx={{ "& .MuiInputBase-input.Mui-disabled": { WebkitTextFillColor: "#000" } }}
                 fullWidth
               >
-                <MenuItem key="0" value="0">都道府県を選択してください</MenuItem>
+                <MenuItem key="0" value=" ">都道府県を選択してください</MenuItem>
                 {PREFECTURES.map(p => (
                   <MenuItem key={p.code} value={p.code}>{ p.name }</MenuItem>
                 ))}
