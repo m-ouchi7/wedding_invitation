@@ -87,7 +87,7 @@ export default function Home(): JSX.Element {
         startIcon={<Edit />}
         color="primary"
         size="medium"
-        onClick={() => navigate("/form")}
+        onClick={ () => navigate("/answerForm") }
       >
         回答する
       </Button>

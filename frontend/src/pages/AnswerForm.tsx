@@ -62,8 +62,8 @@ export default function AnswerForm(): JSX.Element {
     e.preventDefault()
     
     try {
-      const res = await api.post("/api/v1/guest-answer_validate", formValues)
       setErrors({})
+      const res = await api.post("/api/v1/guest-answer_validate", formValues)
       return true
       
     } catch (err) {
@@ -75,7 +75,7 @@ export default function AnswerForm(): JSX.Element {
         console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("サーバーまたはネットワークエラーが発生しました。")
+        alert("サーバーまたはネットワークエラーが発生しました。お手数ですがもう一度入力の上、送信してください。何度も続く場合は主催者に問い合わせてください。")
       }
       return false
     }
@@ -83,7 +83,6 @@ export default function AnswerForm(): JSX.Element {
   
   const handleToConfirm = async (e: FormEvent) => {
     e.preventDefault()
-    console.log(formValues)
     const isValid = await validation(e)
     if (isValid) {
       setIsConfirm(true)
@@ -95,7 +94,7 @@ export default function AnswerForm(): JSX.Element {
 
     try {
       await api.post("/api/v1/guest-answer_create", formValues)
-      setShowSubmitted(true)
+      setShowThanksPage(true)
     } catch (err) {
       console.error(err)
       alert("サーバーエラーが発生しました")
@@ -103,7 +102,7 @@ export default function AnswerForm(): JSX.Element {
   }
 
   // 送信後の画面
-  if (showSubmitted) {
+  if (showThanksPage) {
     return (
       <Stack
         spacing={4}
@@ -128,8 +127,8 @@ export default function AnswerForm(): JSX.Element {
             color="primary"
             sx={{width: "60%"}}
             onClick={() => {
-              setShowSubmitted(false)
-              setIsSubmitted(true)
+              setShowThanksPage(false)
+              setIsFormSubmitted(true)
             }}
           >
             回答内容を確認する
@@ -139,7 +138,7 @@ export default function AnswerForm(): JSX.Element {
             endIcon={<ArrowRight />}
             color="success"
             sx={{width: "60%"}}
-            onClick={ () => navigate("/") }
+            onClick={ () => navigate("/home") }
           >
             招待状ページへ戻る
           </Button>
@@ -358,7 +357,7 @@ export default function AnswerForm(): JSX.Element {
         
           <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
             {/* 確認中 */}
-            {isConfirm && !isSubmitted && (
+            {isConfirm && !isFormSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -371,7 +370,7 @@ export default function AnswerForm(): JSX.Element {
             )}
             
             {/* 入力中は確認ボタン、確認中は送信ボタンを表示 */}
-            {!isSubmitted && (
+            {!isFormSubmitted && (
               <Button
                 variant="contained"
                 endIcon={<ArrowRight />}
@@ -384,13 +383,13 @@ export default function AnswerForm(): JSX.Element {
             )}
 
             {/* 送信後 */}
-            {isSubmitted && (
+            {isFormSubmitted && (
               <Button
                     variant="outlined"
                     endIcon={<ArrowRight />}
                     color="success"
                     sx={{width: "60%"}}
-                    onClick={ () => navigate("/") }
+                    onClick={ () => navigate("/home") }
               >
                 招待状ページへ戻る
               </Button>
