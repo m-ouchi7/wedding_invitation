@@ -6,19 +6,39 @@ import axios from "axios"
 import { Box, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button, Typography, TextField, Stack, Select, MenuItem, InputLabel } from "@mui/material"
 import ArrowRight from "@mui/icons-material/ArrowRight"
 
-export default function AnswerForm() {
+interface FormValues {
+  first_name: string,
+  middle_name: string,
+  last_name: string,
+  guest_side: string,
+  email: string,
+  postal_code: string,
+  prefecture_code: string,
+  city_code: string,
+  town: string,
+  building: string,
+  attendance: string,
+  allergy: string,
+  message: string
+}
+
+type FormErrors = {
+  [K in keyof FormValues]?: string | string[]
+}
+
+export default function AnswerForm(): JSX.Element {
   const navigate = useNavigate()
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
-  const [showThanksPage, setShowThanksPage] = useState(false)
-  const [formValues, setFormValues] = useState({
+  const [isConfirm, setIsConfirm] = useState<boolean>(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false)
+  const [showThanksPage, setShowThanksPage] = useState<boolean>(false)
+  const [formValues, setFormValues] = useState<FormValues>({
     first_name: "",
     middle_name: "",
     last_name: "",
     guest_side: "1",
     email: "",
     postal_code: "",
-    prefecture_code: "0",
+    prefecture_code: " ", // 初期値設定とバリデーションのため半角スペースを入れている
     city_code: "",
     town: "",
     building: "",
@@ -26,21 +46,19 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 5000,
   });
   
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | TextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target
-    setFormValues((prev) => ({ ...prev, [name]: value }))
+    setFormValues((prev) => ({ ...prev, [name]: value as string }))
   }
 
-  const validation = async (e) => {
-    e.preventDefault()
-    
+  const validation = async (): Promise<boolean> => {
     try {
       setErrors({})
       const res = await api.post("/api/v1/guest-answer_validate", formValues)
@@ -50,26 +68,26 @@ export default function AnswerForm() {
       const status = err.response ? err.response.status : null
 
       if (status === 422) {
-        const errorData = err.response.data.error
+        const errorData = err.response.data.error as FormErrors
         setErrors(errorData)
         console.log("Validation Failed: ", errorData)
       } else {
         console.error(err)
-        alert("サーバーまたはネットワークエラーが発生しました。お手数ですがもう一度入力の上、送信してください。何度も続く場合は主催者に問い合わせてください。")
+        alert("サーバーまたはネットワークエラーが発生しました。何度も続く場合は主催者に問い合わせてください。")
       }
       return false
     }
   }
   
-  const handleToConfirm = async (e) => {
+  const handleToConfirm = async (e: FormEvent) => {
     e.preventDefault()
-    const isValid = await validation(e)
+    const isValid = await validation()
     if (isValid) {
       setIsConfirm(true)
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     try {
@@ -261,7 +279,7 @@ export default function AnswerForm() {
                 sx={{ "& .MuiInputBase-input.Mui-disabled": { WebkitTextFillColor: "#000" } }}
                 fullWidth
               >
-                <MenuItem key="0" value="0">都道府県を選択してください</MenuItem>
+                <MenuItem key="0" value=" ">都道府県を選択してください</MenuItem>
                 {PREFECTURES.map(p => (
                   <MenuItem key={p.code} value={p.code}>{ p.name }</MenuItem>
                 ))}
