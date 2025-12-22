@@ -1,4 +1,9 @@
-export const PREFECTURES = [
+export interface Prefecture {
+  code: number;
+  name: string;
+}
+
+export const PREFECTURES: Prefecture[] = [
   { code: 1, name: "北海道" },
   { code: 2, name: "青森県" },
   { code: 3, name: "岩手県" },
@@ -46,4 +51,4 @@ export const PREFECTURES = [
   { code: 45, name: "宮崎県" },
   { code: 46, name: "鹿児島県" },
   { code: 47, name: "沖縄県" },
-]
+];
