@@ -354,6 +354,19 @@ export default function AnswerForm(): JSX.Element {
           </Stack>
         
           <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
+            {/* 送信後 */}
+            {isFormSubmitted && (
+              <Button
+                    variant="outlined"
+                    endIcon={<ArrowRight />}
+                    color="success"
+                    sx={{width: "60%"}}
+                    onClick={ () => navigate("/home") }
+              >
+                招待状ページへ戻る
+              </Button>
+            )}
+            
             {/* 確認中 */}
             {isConfirm && !isFormSubmitted && (
               <Button
@@ -377,19 +390,6 @@ export default function AnswerForm(): JSX.Element {
                 onClick={isConfirm ? handleSubmit : handleToConfirm }
               >
                 { isConfirm ? "送信する" : "入力内容を確認する" }
-              </Button>
-            )}
-
-            {/* 送信後 */}
-            {isFormSubmitted && (
-              <Button
-                    variant="outlined"
-                    endIcon={<ArrowRight />}
-                    color="success"
-                    sx={{width: "60%"}}
-                    onClick={ () => navigate("/home") }
-              >
-                招待状ページへ戻る
               </Button>
             )}
           </Stack>
