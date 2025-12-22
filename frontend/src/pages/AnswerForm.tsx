@@ -61,7 +61,7 @@ export default function AnswerForm(): JSX.Element {
   const validation = async (): Promise<boolean> => {
     try {
       setErrors({})
-      const res = await api.post("/api/v1/guest-answer_validate", formValues)
+      const res = await api.post("/api/v1/guest-answer/validate", formValues)
       return true
       
     } catch (err) {
@@ -91,8 +91,8 @@ export default function AnswerForm(): JSX.Element {
     e.preventDefault()
 
     try {
-      await api.post("/api/v1/guest-answer_create", formValues)
-      setShowThanksPage(true)
+      await api.post("/api/v1/guest-answer", formValues)
+      setShowSubmitted(true)
     } catch (err) {
       console.error(err)
       alert("サーバーエラーが発生しました")

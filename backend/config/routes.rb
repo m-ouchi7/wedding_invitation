@@ -4,8 +4,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'invitation-info', to: 'invitation_info#index'
       get 'guest-info', to: 'guest_info#index'
-      post 'guest-answer_create', to: 'guest_answer#create'
-      post 'guest-answer_validate', to: 'guest_answer#validate'
+
+      resources :guest_answer, only: [:create], path: 'guest-answer' do
+        collection do
+          post :validate
+        end
+      end
     end
   end
 
