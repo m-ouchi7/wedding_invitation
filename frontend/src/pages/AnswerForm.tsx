@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { useNavigate } from 'react-router-dom'
 import { PREFECTURES } from "../const/prefectures";
-import axios from "axios"
 import { Box, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button, Typography, TextField, Stack, Select, MenuItem, InputLabel } from "@mui/material"
 import ArrowRight from "@mui/icons-material/ArrowRight"
+import api from "../utils/api";
 
 interface FormValues {
   first_name: string,
@@ -47,11 +47,6 @@ export default function AnswerForm(): JSX.Element {
     message: ""
   })
   const [errors, setErrors] = useState<FormErrors>({})
-
-  const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    timeout: 5000,
-  });
   
   const handleChange = (e: ChangeEvent<HTMLInputElement | TextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target
