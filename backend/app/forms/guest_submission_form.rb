@@ -43,10 +43,6 @@ class GuestSubmissionForm < BaseForm
   # GuestAnswer
   validates :attendance, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 1 }
 
-  def validate_only
-    valid?
-  end
-
   def submit
     return false unless valid?
 

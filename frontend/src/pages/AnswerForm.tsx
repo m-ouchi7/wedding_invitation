@@ -6,12 +6,32 @@ import axios from "axios"
 import { Box, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel, Button, Typography, TextField, Stack, Select, MenuItem, InputLabel } from "@mui/material"
 import ArrowRight from "@mui/icons-material/ArrowRight"
 
-export default function AnswerForm() {
+interface FormValues {
+  first_name: string,
+  middle_name: string,
+  last_name: string,
+  guest_side: string,
+  email: string,
+  postal_code: string,
+  prefecture_code: string,
+  city_code: string,
+  town: string,
+  building: string,
+  attendance: string,
+  allergy: string,
+  message: string
+}
+
+type FormErrors = {
+  [K in keyof FormValues]?: string | string[]
+}
+
+export default function AnswerForm(): JSX.Element {
   const navigate = useNavigate()
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
-  const [showThanksPage, setShowThanksPage] = useState(false)
-  const [formValues, setFormValues] = useState({
+  const [isConfirm, setIsConfirm] = useState<boolean>(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false)
+  const [showThanksPage, setShowThanksPage] = useState<boolean>(false)
+  const [formValues, setFormValues] = useState<FormValues>({
     first_name: "",
     middle_name: "",
     last_name: "",
@@ -26,29 +46,29 @@ export default function AnswerForm() {
     allergy: "",
     message: ""
   })
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 5000,
   });
   
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | TextAreaElement | { name?: string; value: unknown }>) => {
     const { name, value } = e.target
-    setFormValues((prev) => ({ ...prev, [name]: value }))
+    setFormValues((prev) => ({ ...prev, [name]: value as string }))
   }
 
-  const validation = async () => {
+  const validation = async (): Promise<boolean> => {
     try {
       setErrors({})
-      const res = await api.post("/api/v1/guest-answer_validate", formValues)
+      const res = await api.post("/api/v1/guest-answer/validate", formValues)
       return true
       
     } catch (err) {
       const status = err.response ? err.response.status : null
 
       if (status === 422) {
-        const errorData = err.response.data.error
+        const errorData = err.response.data.error as FormErrors
         setErrors(errorData)
         console.log("Validation Failed: ", errorData)
       } else {
@@ -59,7 +79,7 @@ export default function AnswerForm() {
     }
   }
   
-  const handleToConfirm = async (e) => {
+  const handleToConfirm = async (e: FormEvent) => {
     e.preventDefault()
     const isValid = await validation()
     if (isValid) {
@@ -67,12 +87,12 @@ export default function AnswerForm() {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     try {
-      await api.post("/api/v1/guest-answer_create", formValues)
-      setShowThanksPage(true)
+      await api.post("/api/v1/guest-answer", formValues)
+      setShowSubmitted(true)
     } catch (err) {
       console.error(err)
       alert("サーバーエラーが発生しました")
@@ -334,6 +354,19 @@ export default function AnswerForm() {
           </Stack>
         
           <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
+            {/* 送信後 */}
+            {isFormSubmitted && (
+              <Button
+                    variant="outlined"
+                    endIcon={<ArrowRight />}
+                    color="success"
+                    sx={{width: "60%"}}
+                    onClick={ () => navigate("/home") }
+              >
+                招待状ページへ戻る
+              </Button>
+            )}
+            
             {/* 確認中 */}
             {isConfirm && !isFormSubmitted && (
               <Button
@@ -357,19 +390,6 @@ export default function AnswerForm() {
                 onClick={isConfirm ? handleSubmit : handleToConfirm }
               >
                 { isConfirm ? "送信する" : "入力内容を確認する" }
-              </Button>
-            )}
-
-            {/* 送信後 */}
-            {isFormSubmitted && (
-              <Button
-                    variant="outlined"
-                    endIcon={<ArrowRight />}
-                    color="success"
-                    sx={{width: "60%"}}
-                    onClick={ () => navigate("/home") }
-              >
-                招待状ページへ戻る
               </Button>
             )}
           </Stack>
