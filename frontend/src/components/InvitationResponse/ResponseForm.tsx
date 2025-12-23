@@ -165,30 +165,29 @@ export default function ResponseForm({
             }}
             fullWidth
           />
-          <TextField
-            select
-            name="prefecture_code"
-            value={responseFormValues.prefecture_code}
-            onChange={handleChangeValue}
-            required
-            disabled={isConfirm}
-            error={!!formErrors.prefecture_code}
-            sx={{
-              "& .MuiInputBase-input.Mui-disabled": {
-                WebkitTextFillColor: "#000",
-              },
-            }}
-            fullWidth
-          >
-            <MenuItem key="0" value=" ">
-              都道府県を選択してください
-            </MenuItem>
-            {PREFECTURES.map((p) => (
-              <MenuItem key={p.code} value={p.code}>
-                {p.name}
+          <FormControl disabled={isConfirm} fullWidth>
+            <Select
+              name="prefecture_code"
+              value={responseFormValues.prefecture_code}
+              onChange={handleChangeValue}
+              required
+              error={!!formErrors.prefecture_code}
+              sx={{
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#000",
+                },
+              }}
+            >
+              <MenuItem key="0" value=" ">
+                都道府県を選択してください
               </MenuItem>
-            ))}
-          </TextField>
+              {PREFECTURES.map((p) => (
+                <MenuItem key={p.code} value={p.code}>
+                  {p.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             name="city_code"
             value={responseFormValues.city_code}
