@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Box, Stack, Typography, Button } from "@mui/material";
 import Edit from "@mui/icons-material/Edit";
+import api from "../utils/api";
 
 interface InvitationInfo {
   groom_name: string;
@@ -20,11 +20,6 @@ export default function Home(): JSX.Element {
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL as string,
-    timeout: 5000,
-  });
 
   useEffect(() => {
     api
