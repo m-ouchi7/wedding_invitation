@@ -16,18 +16,18 @@ import {
 } from "@mui/material";
 import { PREFECTURES } from "../../const/prefectures";
 
-interface ResponseFormProps {
+interface AnswerFormProps {
   isConfirm: boolean;
-  responseFormValues: FormValues;
+  answerFormValues: FormValues;
   handleChangeValue: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   formErrors: Record<string, string>;
 }
 
-export default function ResponseForm({
+export default function AnswerForm({
   isConfirm,
-  responseFormValues,
+  answerFormValues,
   handleChangeValue,
   formErrors,
 }): JSX.Element {
@@ -44,7 +44,7 @@ export default function ResponseForm({
           <RadioGroup
             row
             name="attendance"
-            value={responseFormValues.attendance}
+            value={answerFormValues.attendance}
             onChange={handleChangeValue}
           >
             <FormControlLabel value="1" control={<Radio />} label="ご出席" />
@@ -58,7 +58,7 @@ export default function ResponseForm({
         <Stack direction="row" spacing={1}>
           <TextField
             name="last_name"
-            value={responseFormValues.last_name}
+            value={answerFormValues.last_name}
             label="姓"
             onChange={handleChangeValue}
             required
@@ -73,7 +73,7 @@ export default function ResponseForm({
           />
           <TextField
             name="middle_name"
-            value={responseFormValues.middle_name}
+            value={answerFormValues.middle_name}
             label="ミドルネーム"
             onChange={handleChangeValue}
             disabled={isConfirm}
@@ -85,7 +85,7 @@ export default function ResponseForm({
           />
           <TextField
             name="first_name"
-            value={responseFormValues.first_name}
+            value={answerFormValues.first_name}
             label="名"
             onChange={handleChangeValue}
             required
@@ -112,7 +112,7 @@ export default function ResponseForm({
           <RadioGroup
             row
             name="guest_side"
-            value={responseFormValues.guest_side}
+            value={answerFormValues.guest_side}
             onChange={handleChangeValue}
           >
             <FormControlLabel value="1" control={<Radio />} label="新郎" />
@@ -125,7 +125,7 @@ export default function ResponseForm({
         <Typography variant="h6">メールアドレス</Typography>
         <TextField
           name="email"
-          value={responseFormValues.email}
+          value={answerFormValues.email}
           label="sample@gmail.com"
           onChange={handleChangeValue}
           required
@@ -146,7 +146,7 @@ export default function ResponseForm({
         <Stack spacing={1.5} sx={{ width: "100%" }}>
           <TextField
             name="postal_code"
-            value={responseFormValues.postal_code}
+            value={answerFormValues.postal_code}
             label="郵便番号"
             helperText="例：123-4567"
             onChange={handleChangeValue}
@@ -168,7 +168,7 @@ export default function ResponseForm({
           <FormControl disabled={isConfirm} fullWidth>
             <Select
               name="prefecture_code"
-              value={responseFormValues.prefecture_code}
+              value={answerFormValues.prefecture_code}
               onChange={handleChangeValue}
               required
               error={!!formErrors.prefecture_code}
@@ -190,7 +190,7 @@ export default function ResponseForm({
           </FormControl>
           <TextField
             name="city_code"
-            value={responseFormValues.city_code}
+            value={answerFormValues.city_code}
             label="市区町村"
             onChange={handleChangeValue}
             required
@@ -210,7 +210,7 @@ export default function ResponseForm({
           />
           <TextField
             name="town"
-            value={responseFormValues.town}
+            value={answerFormValues.town}
             label="町名"
             onChange={handleChangeValue}
             required
@@ -230,7 +230,7 @@ export default function ResponseForm({
           />
           <TextField
             name="building"
-            value={responseFormValues.building}
+            value={answerFormValues.building}
             label="建物名"
             helperText="例：○○コーポ○○号室"
             helperText={isConfirm ? "" : "例：○○コーポ○○号室"}
@@ -250,7 +250,7 @@ export default function ResponseForm({
         <Typography variant="h6">アレルギー</Typography>
         <TextField
           name="allergy"
-          value={responseFormValues.allergy}
+          value={answerFormValues.allergy}
           helperText={isConfirm ? "" : "エビ、イカ、卵など"}
           InputProps={{ sx: { height: 100 } }}
           onChange={handleChangeValue}
@@ -268,7 +268,7 @@ export default function ResponseForm({
         <Typography variant="h6">メッセージ</Typography>
         <TextField
           name="message"
-          value={responseFormValues.message}
+          value={answerFormValues.message}
           InputProps={{ sx: { height: 200 } }}
           onChange={handleChangeValue}
           disabled={isConfirm}

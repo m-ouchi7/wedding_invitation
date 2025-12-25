@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Button, Stack } from "@mui/material";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import api from "../utils/api";
-import ResponseComplete from "../components/InvitationResponse/ResponseComplete";
-import ResponseForm from "../components/InvitationResponse/ResponseForm";
+import AnswerComplete from "../components/Answer/AnswerComplete";
+import AnswerForm from "../components/Answer/AnswerForm";
 
 interface FormValues {
   first_name: string;
@@ -27,7 +27,7 @@ type FormErrors = {
   [K in keyof FormValues]?: string | string[];
 };
 
-export default function InvitationResponsePage(): JSX.Element {
+export default function Answer(): JSX.Element {
   const navigate = useNavigate();
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [isComplete, setIsComplete] = useState<boolean>(false);
@@ -110,15 +110,15 @@ export default function InvitationResponsePage(): JSX.Element {
       {/* 送信後の画面 */}
       {!isConfirm && isComplete && (
         <>
-          <ResponseComplete />
+          <AnswerComplete />
         </>
       )}
 
       {/* 入力中/確認中の画面 */}
       {!(!isConfirm && isComplete) && (
-        <ResponseForm
+        <AnswerForm
           isConfirm={isConfirm}
-          responseFormValues={formValues}
+          answerFormValues={formValues}
           handleChangeValue={handleChange}
           formErrors={errors}
         />
