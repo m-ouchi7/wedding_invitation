@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'invitation-info', to: 'invitation_info#index'
       get 'guest-info', to: 'guest_info#index'
-
+      get 'guest-info-list', to: 'guest_info_list#index'
       resources :guest_answer, only: [:create], path: 'guest-answer' do
         collection do
           post :validate
