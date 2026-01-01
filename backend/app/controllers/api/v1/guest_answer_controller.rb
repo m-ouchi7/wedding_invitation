@@ -3,9 +3,20 @@ module Api
     class GuestAnswerController < ApplicationController
       rescue_from StandardError, with: :handle_500
 
+      def validate
+        form = GuestSubmissionForm.new(guest_params)
+        if form.valid?
+          render json: {}, status: :ok # 200
+        
+        else
+          render json: {
+            error: form.json_errors
+          }, status: :unprocessable_entity # 422
+        end
+      end
+
       def create
         form = GuestSubmissionForm.new(guest_params)
-
         if form.submit
           render json: {}, status: :created # 200
 
