@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import AnswerForm from './pages/AnswerForm'
+import Answer from './pages/Answer'
 import { Box } from "@mui/material"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -21,7 +21,7 @@ export default function App(): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/answerForm" element={<AnswerForm />} />
+          <Route path="/answer" element={<Answer />} />
         </Routes>
       </BrowserRouter>
     </Box>
