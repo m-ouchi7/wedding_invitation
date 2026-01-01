@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography, Button } from "@mui/material";
 import Edit from "@mui/icons-material/Edit";
-import api from "../utils/api";
+import { get, isSuccess } from "../utils/api";
 
 interface InvitationInfo {
   groom_name: string;
@@ -16,17 +15,23 @@ interface InvitationInfo {
   start_time: string;
 }
 
-export default function Home(): JSX.Element {
+export default function Home(): React.JSX.Element {
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    api
-      .get<InvitationInfo>("/api/v1/invitation-info")
-      .then((res) => setInvitationInfo(res.data))
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+    const fetchInvitationInfo = async () => {
+      const res = await get<InvitationInfo>("/api/v1/invitation-info");
+      if (isSuccess(res)) {
+        setInvitationInfo(res.body);
+      } else {
+        console.error(res.error);
+      }
+      setLoading(false);
+    };
+    
+    fetchInvitationInfo();
   }, []);
 
   if (loading) return <p>loading</p>;
