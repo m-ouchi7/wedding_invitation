@@ -44,3 +44,13 @@ if InvitationInfo.count == 0
 else
   puts "⚠️ 招待状データは既に存在するためスキップしました。"
 end
+
+if Admin.count == 0
+  Admin.find_or_create_by!(email: "admin@example.com") do |admin|
+    admin.password = "password"
+    admin.password_confirmation = "password"
+  end
+  puts "✅ Adminデータを作成しました。"
+else
+  puts "⚠️ Adminデータは既に存在するためスキップしました。"
+end
