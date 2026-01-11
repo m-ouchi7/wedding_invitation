@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 
-export default function AnswerComplete(): JSX.Element {
+export default function AnswerComplete(): React.JSX.Element {
   return (
     <>
       <Typography variant="h6">送信完了</Typography>

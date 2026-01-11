@@ -5,24 +5,22 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
-  FormLabel,
-  Button,
   Typography,
   TextField,
   Stack,
   Select,
   MenuItem,
-  InputLabel,
 } from "@mui/material";
 import { PREFECTURES } from "../../const/prefectures";
+import { FormErrors, FormValues } from "../../pages/Answer";
 
 interface AnswerFormProps {
   isConfirm: boolean;
   answerFormValues: FormValues;
   handleChangeValue: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<{ value: string; name: string; }> | React.ChangeEvent<Omit<HTMLInputElement, "value"> & { value: string; }>
   ) => void;
-  formErrors: Record<string, string>;
+  formErrors: FormErrors;
 }
 
 export default function AnswerForm({
@@ -30,7 +28,7 @@ export default function AnswerForm({
   answerFormValues,
   handleChangeValue,
   formErrors,
-}): JSX.Element {
+}: AnswerFormProps): React.JSX.Element {
   return (
     <form>
       <Stack spacing={1} alignItems="center" sx={{ width: "100%" }}>
@@ -148,7 +146,6 @@ export default function AnswerForm({
             name="postal_code"
             value={answerFormValues.postal_code}
             label="郵便番号"
-            helperText="例：123-4567"
             onChange={handleChangeValue}
             required
             disabled={isConfirm}
@@ -169,7 +166,7 @@ export default function AnswerForm({
             <Select
               name="prefecture_code"
               value={answerFormValues.prefecture_code}
-              onChange={handleChangeValue}
+              // onChange={handleChangeValue}
               required
               error={!!formErrors.prefecture_code}
               sx={{
@@ -232,7 +229,6 @@ export default function AnswerForm({
             name="building"
             value={answerFormValues.building}
             label="建物名"
-            helperText="例：○○コーポ○○号室"
             helperText={isConfirm ? "" : "例：○○コーポ○○号室"}
             onChange={handleChangeValue}
             disabled={isConfirm}

@@ -6,7 +6,7 @@ import { isError, post } from "../utils/api";
 import AnswerComplete from "../components/Answer/AnswerComplete";
 import AnswerForm from "../components/Answer/AnswerForm";
 
-interface FormValues {
+export interface FormValues {
   first_name: string;
   middle_name: string;
   last_name: string;
@@ -22,7 +22,7 @@ interface FormValues {
   message: string;
 }
 
-type FormErrors = {
+export type FormErrors = {
   [K in keyof FormValues]?: string | string[];
 };
 
