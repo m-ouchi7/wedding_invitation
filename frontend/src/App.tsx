@@ -5,13 +5,13 @@ import Home from './pages/Home'
 import Answer from './pages/Answer'
 import { Box } from "@mui/material"
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 )
 
-export default function App(): JSX.Element {
+export default function App(): React.JSX.Element {
   return (
     <Box
       display="flex"
