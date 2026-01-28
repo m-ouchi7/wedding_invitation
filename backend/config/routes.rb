@@ -10,6 +10,9 @@ Rails.application.routes.draw do
           post :validate
         end
       end
+      namespace :admin do
+        post 'login', to: 'sessions#create'
+      end
     end
   end
 
