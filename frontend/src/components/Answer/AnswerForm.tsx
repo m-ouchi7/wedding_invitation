@@ -12,14 +12,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import { PREFECTURES } from "../../const/prefectures";
-import { FormErrors, FormValues } from "../../pages/Answer";
+import { FormChangeEvent, FormErrors, FormValues } from "../../pages/Answer";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 interface AnswerFormProps {
   isConfirm: boolean;
   answerFormValues: FormValues;
-  handleChangeValue: (
-    event: React.ChangeEvent<{ value: string; name: string; }> | React.ChangeEvent<Omit<HTMLInputElement, "value"> & { value: string; }>
-  ) => void;
+  handleChangeValue: (event: FormChangeEvent) => void;
   formErrors: FormErrors;
 }
 
@@ -166,7 +165,7 @@ export default function AnswerForm({
             <Select
               name="prefecture_code"
               value={answerFormValues.prefecture_code}
-              // onChange={handleChangeValue}
+              onChange={handleChangeValue}
               required
               error={!!formErrors.prefecture_code}
               sx={{

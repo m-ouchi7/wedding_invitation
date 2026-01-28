@@ -5,6 +5,11 @@ import ArrowRight from "@mui/icons-material/ArrowRight";
 import { isError, post } from "../utils/api";
 import AnswerComplete from "../components/Answer/AnswerComplete";
 import AnswerForm from "../components/Answer/AnswerForm";
+import { SelectChangeEvent } from "@mui/material/Select";
+
+export type FormChangeEvent =
+  | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  | SelectChangeEvent<string>;
 
 export interface FormValues {
   first_name: string;
@@ -47,21 +52,24 @@ export default function Answer(): React.JSX.Element {
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleChange = (
-    e: ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }
-    >
-  ) => {
+  const handleChange = (e: FormChangeEvent) => {
     const { name, value } = e.target;
-    if (name && name in formValues) {
-      setFormValues((prev) => ({ ...prev, [name as keyof FormValues]: value as string }));
-    }
+
+    if (!name) return;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name as keyof FormValues]: value,
+    }));
   };
 
   const validation = async (): Promise<boolean> => {
     setErrors({});
-    const res = await post<void>("/api/v1/guest-answer/validate", formValues as unknown as Record<string, string>);
-    
+    const res = await post<void>(
+      "/api/v1/guest-answer/validate",
+      formValues as unknown as Record<string, string>
+    );
+
     if (isError(res)) {
       if (res.status === 422) {
         setErrors(res.error as FormErrors);
@@ -87,14 +95,19 @@ export default function Answer(): React.JSX.Element {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const res = await post("/api/v1/guest-answer", formValues as unknown as Record<string, string>);
-    
+    const res = await post(
+      "/api/v1/guest-answer",
+      formValues as unknown as Record<string, string>
+    );
+
     if (isError(res)) {
       console.error(res.error);
-      alert("エラーが発生しました。何度も続く場合は主催者に問い合わせてください。");
+      alert(
+        "エラーが発生しました。何度も続く場合は主催者に問い合わせてください。"
+      );
       return;
     }
-    
+
     setIsConfirm(!isConfirm);
     setIsComplete(!isComplete);
   };
@@ -131,7 +144,7 @@ export default function Answer(): React.JSX.Element {
               sx={{ width: "60%" }}
               onClick={() => {
                 setIsConfirm(!isConfirm);
-                navigate('/home');
+                navigate("/home");
               }}
             >
               回答内容を確認する
