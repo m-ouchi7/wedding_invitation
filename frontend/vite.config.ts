@@ -4,14 +4,14 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [
     react({
-      jsxImportSource: '@emotion/react',
+      jsxImportSource: "@emotion/react",
       babel: {
-        plugins: ['@emotion/babel-plugin'],
+        plugins: ["@emotion/babel-plugin"],
       },
     }),
   ],
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     port: 5173,
     strictPort: true,
     watch: {
