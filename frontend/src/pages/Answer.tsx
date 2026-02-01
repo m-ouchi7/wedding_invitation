@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Stack } from "@mui/material";
 import ArrowRight from "@mui/icons-material/ArrowRight";
-import api from "../utils/api";
+import { isError, post } from "../utils/api";
 import AnswerComplete from "../components/Answer/AnswerComplete";
 import AnswerForm from "../components/Answer/AnswerForm";
+import { SelectChangeEvent } from "@mui/material/Select";
 
-interface FormValues {
+export type FormChangeEvent =
+  | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  | SelectChangeEvent<string>;
+
+export interface FormValues {
   first_name: string;
   middle_name: string;
   last_name: string;
@@ -23,11 +27,11 @@ interface FormValues {
   message: string;
 }
 
-type FormErrors = {
+export type FormErrors = {
   [K in keyof FormValues]?: string | string[];
 };
 
-export default function Answer(): JSX.Element {
+export default function Answer(): React.JSX.Element {
   const navigate = useNavigate();
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
   const [isComplete, setIsComplete] = useState<boolean>(false);
@@ -48,35 +52,36 @@ export default function Answer(): JSX.Element {
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleChange = (
-    e: ChangeEvent<
-      HTMLInputElement | TextAreaElement | { name?: string; value: unknown }
-    >
-  ) => {
+  const handleChange = (e: FormChangeEvent) => {
     const { name, value } = e.target;
-    setFormValues((prev) => ({ ...prev, [name]: value as string }));
+
+    if (!name) return;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name as keyof FormValues]: value,
+    }));
   };
 
   const validation = async (): Promise<boolean> => {
-    try {
-      setErrors({});
-      const res = await api.post("/api/v1/guest-answer/validate", formValues);
-      return true;
-    } catch (err) {
-      const status = err.response ? err.response.status : null;
+    setErrors({});
+    const res = await post<void>(
+      "/api/v1/guest-answer/validate",
+      formValues as unknown as Record<string, string>
+    );
 
-      if (status === 422) {
-        const errorData = err.response.data.error as FormErrors;
-        setErrors(errorData);
-        console.log("Validation Failed: ", errorData);
+    if (isError(res)) {
+      if (res.status === 422) {
+        setErrors(res.error as FormErrors);
       } else {
-        console.error(err);
         alert(
-          "サーバーまたはネットワークエラーが発生しました。何度も続く場合は主催者に問い合わせてください。"
+          "エラーが発生しました。何度も続く場合は主催者に問い合わせてください。"
         );
       }
       return false;
     }
+
+    return true;
   };
 
   const handleToConfirm = async (e: FormEvent) => {
@@ -90,14 +95,21 @@ export default function Answer(): JSX.Element {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      await api.post("/api/v1/guest-answer", formValues);
-      setIsConfirm(!isConfirm);
-      setIsComplete(!isComplete);
-    } catch (err) {
-      console.error(err);
-      alert("サーバーエラーが発生しました");
+    const res = await post(
+      "/api/v1/guest-answer",
+      formValues as unknown as Record<string, string>
+    );
+
+    if (isError(res)) {
+      console.error(res.error);
+      alert(
+        "エラーが発生しました。何度も続く場合は主催者に問い合わせてください。"
+      );
+      return;
     }
+
+    setIsConfirm(!isConfirm);
+    setIsComplete(!isComplete);
   };
 
   return (
@@ -107,14 +119,12 @@ export default function Answer(): JSX.Element {
       alignItems="center"
       sx={{ width: "100%" }}
     >
-      {/* 送信後の画面 */}
       {!isConfirm && isComplete && (
         <>
           <AnswerComplete />
         </>
       )}
 
-      {/* 入力中/確認中の画面 */}
       {!(!isConfirm && isComplete) && (
         <AnswerForm
           isConfirm={isConfirm}
@@ -124,9 +134,7 @@ export default function Answer(): JSX.Element {
         />
       )}
 
-      {/* ボタン */}
       <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
-        {/* 送信後 */}
         {isComplete && !isConfirm && (
           <>
             <Button
@@ -136,7 +144,6 @@ export default function Answer(): JSX.Element {
               sx={{ width: "60%" }}
               onClick={() => {
                 setIsConfirm(!isConfirm);
-                navigate();
               }}
             >
               回答内容を確認する
@@ -156,7 +163,6 @@ export default function Answer(): JSX.Element {
             </Button>
           </>
         )}
-        {/* 確認中 */}
         {!isComplete && isConfirm && (
           <>
             <Button
@@ -179,7 +185,6 @@ export default function Answer(): JSX.Element {
             </Button>
           </>
         )}
-        {/* 入力中 */}
         {!isComplete && !isConfirm && (
           <>
             <Button
