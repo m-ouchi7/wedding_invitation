@@ -26,7 +26,15 @@ bundle exec rails db:migrate
 bundle exec rails db:seed
 ```
 
-### 5. Docker再起動（必要な場合）
+### 5. 認証情報の設定
+```
+docker exec -it rails_api bash
+
+bundle exec rails credentials:edit
+```
+
+## その他
+### Docker再起動（必要な場合）
 ```bash
 docker-compose down
 docker-compose up -d
