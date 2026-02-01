@@ -144,7 +144,6 @@ export default function Answer(): React.JSX.Element {
               sx={{ width: "60%" }}
               onClick={() => {
                 setIsConfirm(!isConfirm);
-                navigate("/home");
               }}
             >
               回答内容を確認する
