@@ -72,6 +72,8 @@ class GuestSubmissionForm < BaseForm
       )
     end
 
+    UserMailer.with(guest: @guest, guest_answer: @guest_answer, guest_personal_info: @guest_personal_info).welcome_email.deliver_now
+
     true
   
   # DB規約違反を捕捉
