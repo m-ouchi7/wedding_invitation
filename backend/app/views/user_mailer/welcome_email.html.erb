@@ -1,0 +1,6 @@
+<h1><%= @guest.last_name %> <%= @guest.middle_name ? @guest.middle_name + " " : "" %><%= @guest.first_name %>様、ご回答ありがとうございます。</h1>
+<h2>ご回答内容</h2>
+<p>出席状況: <%= @guest_answer.attendance == 1 ? "ご出席" : "ご欠席" %></p>
+<p>新郎 / 新婦： <%= @guest.guest_side == 1 ? "新郎側" : "新婦側" %></p>
+<p>アレルギーについて： <%= @guest_answer.allergy.present? ? @guest_answer.allergy : "なし" %></p>
+<p>新婦 / 新婦へのメッセージ： <%= @guest_answer.message.present? ? @guest_answer.message : "なし" %></p>

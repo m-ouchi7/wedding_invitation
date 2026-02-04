@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_02_130416) do
   create_table "admins", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -60,6 +60,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
     t.string "bride_name", limit: 100
     t.string "groom_name", limit: 100
     t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "login"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
