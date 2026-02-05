@@ -17,12 +17,14 @@ interface InvitationInfo {
 
 export default function Home(): React.JSX.Element {
   const navigate = useNavigate();
-  const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(null);
+  const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchInvitationInfo = async () => {
-      const res = await get<InvitationInfo>("/api/v1/invitation-info");
+      const res = await get<InvitationInfo>("/api/v1/invitation-info/1");
       if (isSuccess(res)) {
         setInvitationInfo(res.body);
       } else {
@@ -30,7 +32,7 @@ export default function Home(): React.JSX.Element {
       }
       setLoading(false);
     };
-    
+
     fetchInvitationInfo();
   }, []);
 
@@ -87,7 +89,7 @@ export default function Home(): React.JSX.Element {
         startIcon={<Edit />}
         color="primary"
         size="medium"
-        onClick={ () => navigate("/answer") }
+        onClick={() => navigate("/answer")}
       >
         回答する
       </Button>

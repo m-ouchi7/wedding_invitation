@@ -1,8 +1,8 @@
 module Api
   module V1
     class InvitationInfoController < ApplicationController
-      def index
-        invitation_info = InvitationInfo.last
+      def show
+        invitation_info = InvitationInfo.find_by(id: params[:id])
 
         if !invitation_info.present?
           render json: {error: "INVITATION INFO NOT FOUND"}, status: :not_found
