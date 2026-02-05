@@ -23,6 +23,7 @@ services:
       - DATABASE_PASSWORD=${MYSQL_PASSWORD}
       - DATABASE_NAME=${MYSQL_DATABASE}
       - VITE_FRONT_URL=${VITE_FRONT_URL}
+      - TZ=Asia/Tokyo
 
   frontend:
     build:
