@@ -134,34 +134,23 @@ export default function Answer(): React.JSX.Element {
         />
       )}
 
-      <Stack spacing={2} alignItems="center" sx={{ width: "100%" }}>
+      <Stack
+        spacing={2}
+        alignItems="center"
+        sx={{ width: "100%", paddingBottom: 4 }}
+      >
         {isComplete && !isConfirm && (
-          <>
-            <Button
-              variant="contained"
-              endIcon={<ArrowRight />}
-              color="primary"
-              sx={{ width: "60%" }}
-              onClick={() => {
-                setIsConfirm(!isConfirm);
-              }}
-            >
-              回答内容を確認する
-            </Button>
-          </>
-        )}
-        {isComplete && (
-          <>
-            <Button
-              variant="outlined"
-              endIcon={<ArrowRight />}
-              color="success"
-              sx={{ width: "60%" }}
-              onClick={() => navigate("/home")}
-            >
-              招待状ページへ戻る
-            </Button>
-          </>
+          <Button
+            variant="contained"
+            endIcon={<ArrowRight />}
+            color="primary"
+            sx={{ width: "60%" }}
+            onClick={() => {
+              setIsConfirm(!isConfirm);
+            }}
+          >
+            回答内容を確認する
+          </Button>
         )}
         {!isComplete && isConfirm && (
           <>
@@ -186,18 +175,25 @@ export default function Answer(): React.JSX.Element {
           </>
         )}
         {!isComplete && !isConfirm && (
-          <>
-            <Button
-              variant="contained"
-              endIcon={<ArrowRight />}
-              color="success"
-              sx={{ width: "60%" }}
-              onClick={handleToConfirm}
-            >
-              入力内容を確認する
-            </Button>
-          </>
+          <Button
+            variant="contained"
+            endIcon={<ArrowRight />}
+            color="success"
+            sx={{ width: "60%" }}
+            onClick={handleToConfirm}
+          >
+            入力内容を確認する
+          </Button>
         )}
+        <Button
+          variant="outlined"
+          endIcon={<ArrowRight />}
+          color="success"
+          sx={{ width: "60%" }}
+          onClick={() => navigate("/home")}
+        >
+          招待状ページへ戻る
+        </Button>
       </Stack>
     </Stack>
   );
