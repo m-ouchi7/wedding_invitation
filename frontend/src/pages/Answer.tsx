@@ -1,11 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Stack } from "@mui/material";
-import ArrowRight from "@mui/icons-material/ArrowRight";
+import { Stack } from "@mui/material";
 import { isError, post } from "../utils/api";
 import AnswerComplete from "../components/Answer/AnswerComplete";
 import AnswerForm from "../components/Answer/AnswerForm";
 import { SelectChangeEvent } from "@mui/material/Select";
+import { FormButton } from "../components/UI/Buttons//FormButton";
 
 export type FormChangeEvent =
   | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -140,60 +140,32 @@ export default function Answer(): React.JSX.Element {
         sx={{ width: "100%", paddingBottom: 4 }}
       >
         {isComplete && !isConfirm && (
-          <Button
-            variant="contained"
-            endIcon={<ArrowRight />}
+          <FormButton
             color="primary"
-            sx={{ width: "60%" }}
+            label="回答内容を確認する"
             onClick={() => {
               setIsConfirm(!isConfirm);
             }}
-          >
-            回答内容を確認する
-          </Button>
+          />
         )}
         {!isComplete && isConfirm && (
           <>
-            <Button
-              variant="contained"
-              endIcon={<ArrowRight />}
+            <FormButton
               color="primary"
-              sx={{ width: "60%" }}
+              label="入力し直す"
               onClick={() => setIsConfirm(!isConfirm)}
-            >
-              入力し直す
-            </Button>
-            <Button
-              variant="contained"
-              endIcon={<ArrowRight />}
-              color="success"
-              sx={{ width: "60%" }}
-              onClick={handleSubmit}
-            >
-              送信する
-            </Button>
+            />
+            <FormButton label="送信する" onClick={handleSubmit} />
           </>
         )}
         {!isComplete && !isConfirm && (
-          <Button
-            variant="contained"
-            endIcon={<ArrowRight />}
-            color="success"
-            sx={{ width: "60%" }}
-            onClick={handleToConfirm}
-          >
-            入力内容を確認する
-          </Button>
+          <FormButton label="入力内容を確認する" onClick={handleToConfirm} />
         )}
-        <Button
+        <FormButton
           variant="outlined"
-          endIcon={<ArrowRight />}
-          color="success"
-          sx={{ width: "60%" }}
+          label="招待状ページへ戻る"
           onClick={() => navigate("/home")}
-        >
-          招待状ページへ戻る
-        </Button>
+        />
       </Stack>
     </Stack>
   );
