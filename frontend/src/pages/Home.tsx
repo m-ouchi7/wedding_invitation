@@ -24,7 +24,7 @@ export default function Home(): React.JSX.Element {
 
   useEffect(() => {
     const fetchInvitationInfo = async () => {
-      const res = await get<InvitationInfo>("/api/v1/invitation-info/1");
+      const res = await get<InvitationInfo>("/api/v1/invitation-info/TgPcKQyb");
       if (isSuccess(res)) {
         setInvitationInfo(res.body);
       } else {
