@@ -23,6 +23,8 @@ services:
       - DATABASE_PASSWORD=${MYSQL_PASSWORD}
       - DATABASE_NAME=${MYSQL_DATABASE}
       - VITE_FRONT_URL=${VITE_FRONT_URL}
+      - GOOGLE_ID=${GOOGLE_ID}
+      - GOOGLE_PASSWORD=${GOOGLE_PASSWORD}
       - TZ=Asia/Tokyo
 
   frontend:

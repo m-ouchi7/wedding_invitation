@@ -21,8 +21,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
   create_table "guest_answers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "guest_id", null: false
     t.integer "attendance", limit: 1, null: false, unsigned: true
-    t.text "allergy", size: :long
-    t.text "message", size: :long
+    t.text "allergy"
+    t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["guest_id"], name: "index_guest_answers_on_guest_id"
@@ -31,7 +31,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
   create_table "guest_personal_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "guest_id", null: false
     t.string "email", null: false
-    t.string "phone", limit: 15
     t.string "postal_code", limit: 8, null: false
     t.integer "prefecture_code", limit: 2, null: false
     t.bigint "city_code", null: false
@@ -52,6 +51,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
   end
 
   create_table "invitation_infos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "code", limit: 8, null: false
     t.string "venue_name", limit: 100
     t.string "postal_code", limit: 15
     t.string "address"
@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_03_063809) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_invitation_infos_on_code", unique: true
   end
 
   add_foreign_key "guest_answers", "guests"

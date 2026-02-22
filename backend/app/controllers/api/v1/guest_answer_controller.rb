@@ -17,7 +17,14 @@ module Api
 
       def create
         form = GuestSubmissionForm.new(guest_params)
+        
         if form.submit
+          GuestMailer.with(
+            guest: form.guest,
+            guest_answer: form.guest_answer,
+            guest_personal_info: form.guest_personal_info
+          ).thanks_email.deliver_now
+
           render json: {}, status: :created # 200
 
         else
