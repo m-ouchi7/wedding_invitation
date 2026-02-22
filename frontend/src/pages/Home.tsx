@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Stack, Typography, Button } from "@mui/material";
 import Edit from "@mui/icons-material/Edit";
 import { get, isSuccess } from "../utils/api";
@@ -16,6 +16,8 @@ interface InvitationInfo {
 }
 
 export default function Home(): React.JSX.Element {
+  const params = useParams();
+  const { code } = params;
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(
     null
@@ -24,7 +26,7 @@ export default function Home(): React.JSX.Element {
 
   useEffect(() => {
     const fetchInvitationInfo = async () => {
-      const res = await get<InvitationInfo>("/api/v1/invitation-info/TgPcKQyb");
+      const res = await get<InvitationInfo>(`/api/v1/invitation-info/${code}`);
       if (isSuccess(res)) {
         setInvitationInfo(res.body);
       } else {
@@ -34,7 +36,7 @@ export default function Home(): React.JSX.Element {
     };
 
     fetchInvitationInfo();
-  }, []);
+  }, [code]);
 
   if (loading) return <p>loading</p>;
   if (!invitationInfo) return <p>データが見つかりません</p>;
