@@ -23,13 +23,15 @@ export type FormState = {
   errors: FormErrors;
   isConfirm: boolean;
   isComplete: boolean;
+  isSubmitting: boolean;
 };
 
 export type FormAction =
   | { type: "UPDATE_FIELD"; name: keyof FormValues; value: string }
   | { type: "SET_ERRORS"; errors: FormErrors }
   | { type: "SET_CONFIRM"; isConfirm: boolean }
-  | { type: "SET_COMPLETE"; isComplete: boolean };
+  | { type: "SET_COMPLETE"; isComplete: boolean }
+  | { type: "SET_SUBMITTING"; isSubmitting: boolean };
 
 export const initialState: FormState = {
   values: {
@@ -50,6 +52,7 @@ export const initialState: FormState = {
   errors: {},
   isConfirm: false,
   isComplete: false,
+  isSubmitting: false,
 };
 
 export function formReducer(state: FormState, action: FormAction): FormState {
@@ -77,6 +80,11 @@ export function formReducer(state: FormState, action: FormAction): FormState {
         ...state,
         isComplete: action.isComplete,
         isConfirm: false,
+      };
+    case "SET_SUBMITTING":
+      return {
+        ...state,
+        isSubmitting: action.isSubmitting,
       };
     default:
       return state;

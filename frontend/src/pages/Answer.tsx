@@ -20,7 +20,7 @@ export type FormChangeEvent =
 export default function Answer(): React.JSX.Element {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(formReducer, initialState);
-  const { values, errors, isConfirm, isComplete } = state;
+  const { values, errors, isConfirm, isComplete, isSubmitting } = state;
 
   const handleChange = (e: FormChangeEvent) => {
     const { name, value } = e.target;
@@ -61,11 +61,16 @@ export default function Answer(): React.JSX.Element {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    dispatch({ type: "SET_SUBMITTING", isSubmitting: true });
 
     const res = await post(
       "/api/v1/guest-answer",
       values as unknown as Record<string, string>
     );
+
+    dispatch({ type: "SET_SUBMITTING", isSubmitting: false });
 
     if (isError(res)) {
       console.error(res.error);
