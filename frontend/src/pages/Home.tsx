@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Stack, Typography, Button } from "@mui/material";
 import Edit from "@mui/icons-material/Edit";
 import { get, isSuccess } from "../utils/api";
@@ -16,13 +16,17 @@ interface InvitationInfo {
 }
 
 export default function Home(): React.JSX.Element {
+  const params = useParams();
+  const { code } = params;
   const navigate = useNavigate();
-  const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(null);
+  const [invitationInfo, setInvitationInfo] = useState<InvitationInfo | null>(
+    null
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchInvitationInfo = async () => {
-      const res = await get<InvitationInfo>("/api/v1/invitation-info");
+      const res = await get<InvitationInfo>(`/api/v1/invitation-info/${code}`);
       if (isSuccess(res)) {
         setInvitationInfo(res.body);
       } else {
@@ -30,9 +34,9 @@ export default function Home(): React.JSX.Element {
       }
       setLoading(false);
     };
-    
+
     fetchInvitationInfo();
-  }, []);
+  }, [code]);
 
   if (loading) return <p>loading</p>;
   if (!invitationInfo) return <p>データが見つかりません</p>;
@@ -87,7 +91,7 @@ export default function Home(): React.JSX.Element {
         startIcon={<Edit />}
         color="primary"
         size="medium"
-        onClick={ () => navigate("/answer") }
+        onClick={() => navigate("/answer")}
       >
         回答する
       </Button>

@@ -1,6 +1,7 @@
 class CreateInvitationInfos < ActiveRecord::Migration[7.1]
   def change
     create_table :invitation_infos do |t|
+      t.string :code, null: false, limit: 8
       t.string :venue_name, limit: 100
       t.string :postal_code, limit: 15
       t.string :address, limit: 255
@@ -12,5 +13,7 @@ class CreateInvitationInfos < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :invitation_infos, :code, unique: true
   end
 end
