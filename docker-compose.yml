@@ -25,6 +25,7 @@ services:
       - VITE_FRONT_URL=${VITE_FRONT_URL}
       - GOOGLE_ID=${GOOGLE_ID}
       - GOOGLE_PASSWORD=${GOOGLE_PASSWORD}
+      - TZ=Asia/Tokyo
 
   frontend:
     build:
