@@ -12,8 +12,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { PREFECTURES } from "../../const/prefectures";
-import { FormChangeEvent, FormErrors, FormValues } from "../../pages/Answer";
-import { SelectChangeEvent } from "@mui/material/Select";
+import { FormChangeEvent } from "../../pages/Answer";
+import { FormErrors, FormValues } from "../../pages/AnswerReducer";
 
 interface AnswerFormProps {
   isConfirm: boolean;
